@@ -1,9 +1,10 @@
 import "../App.css";
+import { Link } from "react-router-dom";
 
 const Root = () => {
     return (
-        <>
-            <h1 className="outline-emerald-700 outline rounded-md my-10 p-5">
+        <div className="w-full h-full">
+            <h1 className="border border-amber-400 bg-amber-800 text-amber-400 rounded-md my-10 p-10">
                 Office Reservations
             </h1>
             <div
@@ -12,10 +13,14 @@ const Root = () => {
                     justifyContent: "space-around",
                 }}
             >
-                <button>Administrator</button>
-                <button>Worker</button>
+                <Link to="/dashboard">
+                    <button className="px-10 py-5">Administrator</button>
+                </Link>
+                <Link to="/reserve">
+                    <button className="px-10 py-5">Worker</button>
+                </Link>
             </div>
-        </>
+        </div>
     );
 };
 
