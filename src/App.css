@@ -1,0 +1,17 @@
+.dropdown {
+    position: relative;
+}
+
+.menu {
+    position: absolute;
+    list-style-type: none;
+    padding: 0;
+    top: 110%;
+    width: 150px;
+    background-color: #1f1f1f;
+}
+
+
+.menu>li>button {
+    width: 100%;
+}
