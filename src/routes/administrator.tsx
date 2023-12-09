@@ -26,7 +26,7 @@ const AdministratorDashboard: React.FC = () => {
                         <h5>Reservations</h5>
                     </Link>
                 </div>
-                <div>
+                <div className="w-full">
                     <Outlet />
                 </div>
             </div>

@@ -19,15 +19,15 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: "offices",
-                        element: <Data dataEnum={0} />,
+                        element: <Data />,
                     },
                     {
                         path: "workers",
-                        element: <Data dataEnum={1} />,
+                        element: <Data />,
                     },
                     {
                         path: "reservations",
-                        element: <Data dataEnum={2} />,
+                        element: <Data />,
                     },
                 ],
             },
