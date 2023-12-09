@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useUser } from "./root";
-import { UserI } from "../mocks/interfaces";
 
 const PickRole = () => {
     const { user } = useUser();
