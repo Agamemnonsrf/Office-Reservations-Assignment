@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../mocks/utils";
 import { UserI } from "../mocks/interfaces";
+import { Outlet, useOutletContext } from "react-router-dom";
+
+type ContextType = { user: UserI | null };
 
 const Root = () => {
     const [user, setUser] = useState<UserI | null>(null);
@@ -15,40 +18,19 @@ const Root = () => {
     }, []);
 
     return (
-        <div className="w-full h-full">
-            {user ? (
-                <>
-                    <h1 className="border border-amber-400 bg-amber-800 text-amber-400 rounded-md mb-4 p-10">
-                        Welcome {user.name}
-                    </h1>
-                    <div className="flex justify-around w-1/2 mx-auto border border-gray-400 rounded-md p-10">
-                        {user.roles.includes("administrator") && (
-                            <Link to="/dashboard">
-                                <button className="px-10 py-5">
-                                    Administrator
-                                </button>
-                            </Link>
-                        )}
-                        <Link to="/reserve">
-                            <button className="px-10 py-5">Worker</button>
-                        </Link>
-                        <button
-                            className="px-10 py-5"
-                            onClick={() => setUser(null)}
-                        >
-                            Log Out
-                        </button>
+        <>
+            <div className="items-center w-full border border-amber-400 bg-amber-800 text-amber-400 rounded-md p-2 flex justify-between">
+                <h5>Office Reservations</h5>
+                {user ? (
+                    <div className="flex items-center justify-around px-5 w-1/2">
+                        <p>Logged in as: {user.name}</p>
+                        <button onClick={() => setUser(null)}>Log Out</button>
                     </div>
-                </>
-            ) : (
-                <>
-                    <h1 className="border border-amber-400 bg-amber-800 text-amber-400 rounded-md mb-4 p-10">
-                        Office Reservations
-                    </h1>
-                    <div className="flex justify-around w-1/2 mx-auto relative">
+                ) : (
+                    <div className="flex items-center justify-around relative">
                         <button
-                            className="px-10 py-5"
                             onClick={() => setOpenedDropdown((prev) => !prev)}
+                            className="mr-20"
                         >
                             Log In
                         </button>
@@ -58,21 +40,37 @@ const Root = () => {
                                 {users.map((user) => {
                                     return (
                                         <li key={user.id} className="menu-item">
-                                            <button
-                                                onClick={() => setUser(user)}
-                                            >
-                                                {user.name}
-                                            </button>
+                                            <Link to="pick-role">
+                                                <button
+                                                    onClick={() => {
+                                                        setUser(user);
+                                                        setOpenedDropdown(
+                                                            false
+                                                        );
+                                                    }}
+                                                >
+                                                    {user.name}
+                                                </button>
+                                            </Link>
                                         </li>
                                     );
                                 })}
                             </ul>
                         ) : null}
                     </div>
-                </>
+                )}
+            </div>
+            {user ? (
+                <Outlet context={{ user } satisfies ContextType} />
+            ) : (
+                <h1>Welcome, please Log In</h1>
             )}
-        </div>
+        </>
     );
 };
+
+export function useUser() {
+    return useOutletContext<ContextType>();
+}
 
 export default Root;

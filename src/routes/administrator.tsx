@@ -6,7 +6,7 @@ const AdministratorDashboard: React.FC = () => {
         <div className=" w-full h-full">
             <div className="flex items-center bg-neutral-800 justify-around">
                 <div className="w-1/5 items-center flex  px-5">
-                    <Link to="/">
+                    <Link to="/pick-role">
                         <button>Back</button>
                     </Link>
                 </div>

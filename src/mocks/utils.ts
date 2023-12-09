@@ -1,29 +1,34 @@
-
 // Function to get data
-import {users, buildings} from './data.js';
+import { users, buildings } from "./data.js";
 //import interfaces
-import {UserI, BuildingI, RoomI, WorkspaceI} from './interfaces';
+import { UserI, BuildingI, RoomI, WorkspaceI } from "./interfaces";
 
+type action = "users" | "buildings" | "rooms" | "workspaces";
+type filter = { building: number; room?: number };
 
-type action = 'users' | 'buildings' | 'rooms' | 'workspaces';
-type filter = {building: number, room?: number};
-
-const getData = (action: action, filter: filter) => {
-  switch (action) {
-    case 'users':
-        return users;
-    case 'buildings':
-      return buildings;
-      break;
-    case 'rooms':
-      return buildings.filter((building: BuildingI) => building.id === filter.building)[0].rooms;
-    case 'workspaces':
-      return buildings.filter((building: BuildingI) => building.id === filter.building)[0].rooms.filter((room: RoomI) => room.id === filter.room)[0].workspaces;
-    default:
-      throw new Error('Invalid action');
-      break;
-  }
-}
+const getData = (action: action, filter: filter = { building: 0, room: 0 }) => {
+    switch (action) {
+        case "users":
+            return users;
+        case "buildings":
+            return buildings;
+            break;
+        case "rooms":
+            return buildings.filter(
+                (building: BuildingI) => building.id === filter.building
+            )[0].rooms;
+        case "workspaces":
+            return buildings
+                .filter(
+                    (building: BuildingI) => building.id === filter.building
+                )[0]
+                .rooms.filter((room: RoomI) => room.id === filter.room)[0]
+                .workspaces;
+        default:
+            throw new Error("Invalid action");
+            break;
+    }
+};
 
 // // Function to set data
 // const setData = (action, data) => {
