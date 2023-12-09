@@ -2,7 +2,7 @@ import "../App.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getData } from "../mocks/utils";
-import { UserI } from "../mocks/interfaces";
+import { UserI } from "../interfaces/db-intertface";
 
 const Root = () => {
     const [user, setUser] = useState<UserI | null>(null);

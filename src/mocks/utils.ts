@@ -2,7 +2,7 @@
 // Function to get data
 import {users, buildings} from './data.js';
 //import interfaces
-import {UserI, BuildingI, RoomI, WorkspaceI} from './interfaces';
+import {UserI, BuildingI, RoomI, WorkspaceI} from '../interfaces/db-intertface.js';
 
 
 type action = 'users' | 'buildings' | 'rooms' | 'workspaces';
