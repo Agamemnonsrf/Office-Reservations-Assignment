@@ -1,10 +1,11 @@
 import React from "react";
+import LoginDropdown from "../components/employee/login-dropdown";
 
 const WorkerWelcomePage: React.FC = () => {
     return (
         <div>
             <h1>Welcome, Worker!</h1>
-            <p>Thank you for using our office reservation system.</p>
+            <LoginDropdown />
         </div>
     );
 };
