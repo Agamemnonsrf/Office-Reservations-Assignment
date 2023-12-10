@@ -3,15 +3,19 @@ interface TableDataI {
     columns: TableColumnI[];
     rows: any[];
     inlineEditing: boolean;
-    onSave : Function;
+    onSave? : Function;
+    onDelete? : Function;
 }
 
-type ColumnType = "text" | "number" | "boolean";
+type ColumnType = "text" | "number" | "radio";
 
 interface TableColumnI {
     field: string;
     title: string;
     type: ColumnType;
+    editable?: boolean;
+    defaultValue?: any;
+    validators?:any;
 }
 
 export type { TableDataI, TableColumnI };

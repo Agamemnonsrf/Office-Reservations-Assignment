@@ -16,6 +16,7 @@ const Data = () => {
             field: "id",
             title: "#",
             type: "number",
+            editable: false,
         },
         {
             field: "name",
@@ -34,16 +35,13 @@ const Data = () => {
             <DataTable
                 style={{ height: "500px" }}
                 columns={columns}
-                rows={data.map((item) => {
-                    return {
-                        id: item.id,
-                        name: item.name,
-                        roles: item.roles.join(", "),
-                    };
-                })}
+                rows={[]}
                 inlineEditing={true}
                 onSave={(edited_row:any) => {
                     console.log(edited_row);
+                }}
+                onDelete={(deleted_row:any) => {
+                    console.log(deleted_row);
                 }}
             />
 

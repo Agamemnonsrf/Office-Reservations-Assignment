@@ -1,20 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { TableDataI } from "../../interfaces/table-interface";
+import { set, useForm } from 'react-hook-form';
 
 const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
 
-    
+    const [edited_row_index,setEditedRowIndex] = useState(-1);
+    const [add_new_open,setAddNewOpen] = useState(false);
+
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const onSubmit = (data:any) => console.log(data);console.log(errors);
+
     const removePx = (value: string) : number => {
         return Number(value.replace('px', ''));
     };
 
     const handleSave = (edited_row: any) => {
-        props.onSave(edited_row);
+        props.onSave && props.onSave(edited_row);
     }
 
     return (
         <div className="p-2 w-full  h-52">
-            <div className="align-middle block w-full shadow overflow-auto custom-scrollbar border-b border-gray-200 rounded-lg" style={props.style ?? {height:500}}>
+            <div className="w-full align-middle block shadow overflow-y-auto border-b border-gray-200 rounded-lg" style={props.style ?? {height:500}}>
                 <div>
                     <table className="divide-y divide-gray-200 w-full table-auto">
                         <thead className="bg-gray-50 sticky top-0">
@@ -33,18 +39,54 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                     <th
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0"
-                                    ></th>
+                                    >
+                                        <div className="flex justify-center items-center text-white"><button onClick={
+                                            ()=>{
+                                                setAddNewOpen(true)
+                                                setEditedRowIndex(-1)
+                                            }
+                                        } className="flex items-center justify-center text-white">Add New</button></div>
+                                        
+                                    </th>
                                 )}
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
                             
+                            {add_new_open && (
+                                <tr>
+                                    {props.columns.map((column) => {
+                                        if(column.editable === false){
+                                            return (
+                                                <td className="px-6 py-4 whitespace-nowrap text-black grow">
+                                                    {column.defaultValue}
+                                                </td>
+                                            );
+                                        }
+                                        return (
+                                            <td className="px-6 py-4 whitespace-nowrap text-black grow">
+                                                <input className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                                                    type={column.type}
+                                                    defaultValue={column.defaultValue}
+                                                    {...register(column.field,column.validators ?? {required: false})}
+                                                />
+                                            </td>
+                                        );
+                                    })}
+                                    {props.inlineEditing && (
+                                        <td className="px-6 py-4 whitespace-nowrap  gap-2 w-2">
+                                            <button onClick={() => {handleSave(edited_row_index)}}>Add</button>
+                                            <button onClick={() => { setAddNewOpen(false) }}>Cancel</button>
+                                        </td>
+                                    )}
+                                </tr>
+                            )
+                            }
+
                             {props.rows.length === 0 && 
                                      (
                                         <tr className="">
-                                            
-
-                                            <td className="px-6 py-4 whitespace-nowrap text-black grow text-center text-lg" colSpan={props.columns.length + (props.inlineEditing ? 1 : 0)} style={{ height: `calc(${props.style? removePx((props.style.height??0).toString()) : 500}px - ${41}px)` }}>
+                                            <td className="px-6 py-4 whitespace-nowrap text-black grow text-center text-lg" colSpan={props.columns.length + (props.inlineEditing ? 1 : 0)} style={{ height: `calc(${props.style? removePx((props.style.height??0).toString()) : 500}px - ${57 +( add_new_open?78:0)}px)` }}>
                                                 No data to display
                                             </td>
                                         </tr>
@@ -52,26 +94,62 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                 
                             }
                             
-                            {props.rows.length > 0 && props.rows.map((row) => {
-                                return (
-                                    <tr>
-                                        {props.columns.map((column) => {
-                                            return (
-                                                <td className="px-6 py-4 whitespace-nowrap text-black grow">
-                                                    {row[column.field]}
+                            {props.rows.length > 0 && props.rows.map((row:any , row_index : number) => {
+                                if(edited_row_index === row_index){
+                                    return (
+                                        <tr>
+                                            {props.columns.map((column) => {
+                                                if(column.editable === false){
+                                                    return (
+                                                        <td className="px-6 py-4 whitespace-nowrap text-black grow">
+                                                            {row[column.field]}
+                                                        </td>
+                                                    );
+                                                }
+                                                return (
+                                                    <td className="px-6 py-4 whitespace-nowrap text-black grow">
+                                                        <input className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                                                            type={column.type}
+                                                            defaultValue={row[column.field]}
+                                                            {...register(column.field,column.validators ?? {required: false})}
+                                                        />
+                                                    </td>
+                                                );
+                                            })}
+                                            {props.inlineEditing && (
+                                                <td className="px-6 py-4 whitespace-nowrap  gap-2 w-2">
+                                                    <button onClick={() => {handleSave(row)}}>Save</button>
+                                                    <button onClick={() => { setEditedRowIndex(-1) }}>Cancel</button>
                                                 </td>
-                                            );
-                                        })}
-                                        {props.inlineEditing && (
-                                            <td className="px-6 py-4 whitespace-nowrap flex gap-2 grow w-24">
-                                                <button>Edit</button>
-                                                <button className="text-red-600">
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        )}
-                                    </tr>
-                                );
+                                            )}
+                                        </tr>
+                                    )
+                                }
+                                else{
+                                    return (
+                                        <tr>
+                                            {props.columns.map((column) => {
+                                                return (
+                                                    <td className="px-6 py-4 whitespace-nowrap text-black grow">
+                                                        {row[column.field]}
+                                                    </td>
+                                                );
+                                            })}
+                                            {props.inlineEditing && (
+                                                <td className="px-6 py-4 whitespace-nowrap flex gap-2 grow w-24">
+                                                    <button onClick={()=>{
+                                                        setEditedRowIndex(row_index);
+                                                        setAddNewOpen(false);
+                                                    }}>Edit</button>
+                                                    <button className="text-red-600">
+                                                        Delete
+                                                    </button>
+                                                </td>
+                                            )}
+                                        </tr>
+                                    );
+                                }
+                                
                             })}
                         </tbody>
                     </table>
