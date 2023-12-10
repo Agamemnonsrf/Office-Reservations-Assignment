@@ -30,8 +30,9 @@ const Data = () => {
     ];
 
     return (
-        <div className="h-52 flex items-center w-full justify-center">
+        <div className="h-52 flex flex-col items-center w-full justify-center">
             <DataTable
+                style={{ height: "500px" }}
                 columns={columns}
                 rows={data.map((item) => {
                     return {
@@ -41,7 +42,11 @@ const Data = () => {
                     };
                 })}
                 inlineEditing={true}
+                onSave={(edited_row:any) => {
+                    console.log(edited_row);
+                }}
             />
+
         </div>
     );
 };

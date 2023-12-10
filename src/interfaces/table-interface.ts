@@ -1,7 +1,9 @@
 interface TableDataI {
+    style? : React.CSSProperties;
     columns: TableColumnI[];
     rows: any[];
     inlineEditing: boolean;
+    onSave : Function;
 }
 
 type ColumnType = "text" | "number" | "boolean";
