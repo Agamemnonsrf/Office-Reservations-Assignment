@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getData } from "../mocks/utils";
 import { UserI } from "../interfaces/db-intertface";
 import { Outlet, useOutletContext } from "react-router-dom";
+import ReservationComponent from "../components/employee/reserve/reservation-component";
 
 type ContextType = { user: UserI | null };
 
@@ -63,7 +64,9 @@ const Root = () => {
             {user ? (
                 <Outlet context={{ user } satisfies ContextType} />
             ) : (
-                <h1>Welcome, please Log In</h1>
+                <div className="m-10">
+                    <ReservationComponent />
+                </div>
             )}
         </>
     );
