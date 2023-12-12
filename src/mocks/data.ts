@@ -1,5 +1,12 @@
 // Mock data for users
-const users = [
+import {
+    UserI,
+    WorkspaceI,
+    RoomI,
+    BuildingI,
+} from "../interfaces/db-intertface";
+
+const users: UserI[] = [
     { id: 1, name: "John Doe", roles: ["administrator", "employee"] },
     { id: 2, name: "Jane Smith", roles: ["employee"] },
     { id: 3, name: "Mike Johnson", roles: ["employee"] },
@@ -32,7 +39,7 @@ const users = [
 ];
 
 // Mock data for workspaces
-const workspaces = [
+const workspaces: WorkspaceI[] = [
     { id: 1, name: "Workspace 1", desktops: 5 },
     { id: 2, name: "Workspace 2", desktops: 2 },
     { id: 3, name: "Workspace 3", desktops: 9 },
@@ -71,7 +78,7 @@ const workspaces = [
 ];
 
 // Mock data for rooms
-const rooms = [
+const rooms: RoomI[] = [
     {
         id: 1,
         name: "Room 1",
@@ -117,9 +124,19 @@ const rooms = [
 ];
 
 // Mock data for buildings
-const buildings = [
-    { id: 1, name: "Building A", rooms: [rooms[0], rooms[1], rooms[2]] },
-    { id: 2, name: "Building B", rooms: [rooms[3], rooms[4]] },
+const buildings: BuildingI[] = [
+    {
+        id: 1,
+        name: "Building A",
+        rooms: [rooms[0], rooms[1], rooms[2]],
+        features: ["parking lot", "restaurant"],
+    },
+    {
+        id: 2,
+        name: "Building B",
+        rooms: [rooms[3], rooms[4]],
+        features: ["bike stand", "underground garage", "cinema"],
+    },
 ];
 
 export { users, buildings };

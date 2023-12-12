@@ -1,4 +1,4 @@
-type roles = 'administrator' | 'employee';
+type roles = "administrator" | "employee";
 
 interface UserI {
     id: number;
@@ -23,7 +23,7 @@ interface BuildingI {
     id: number;
     name: string;
     rooms: RoomI[];
+    features: string[];
 }
-
 
 export type { UserI, WorkspaceI, RoomI, BuildingI };

@@ -1,50 +1,79 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useContext, useState } from "react";
-import { RoomI, WorkspaceI } from "../../../interfaces/db-intertface";
+import {
+    BuildingI,
+    RoomI,
+    WorkspaceI,
+} from "../../../interfaces/db-intertface";
 import { ReserveContext } from "./reserve-context";
 
 interface WorkspaceModalI {
     room: RoomI;
+    building: BuildingI;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
 }
 
-const WorkspaceModal = ({ room, isOpen, setIsOpen }: WorkspaceModalI) => {
-    const [selectedWorkspaces, setSelectedWorkspaces] = useState<WorkspaceI[]>(
-        []
-    );
+const WorkspaceModal = ({
+    room,
+    building,
+    isOpen,
+    setIsOpen,
+}: WorkspaceModalI) => {
     const [maxWorkspaces, setMaxWorkspaces] = useState(false);
-    const { setWorkspaceNum, workspaceNum, hasSetWorkspaceNum } =
-        useContext(ReserveContext);
+    const [selectedWorkspacesLocal, setSelectedWorkspacesLocal] = useState<
+        WorkspaceI[]
+    >([]);
+    const {
+        setWorkspaceNum,
+        workspaceNum,
+        hasSetWorkspaceNum,
+        setRoomBuilding,
+        setSelectedWorkspaces,
+    } = useContext(ReserveContext);
+
+    const handleSubmit = () => {
+        handleCancel();
+        setSelectedWorkspaces(selectedWorkspacesLocal);
+        setRoomBuilding({ building, room });
+    };
+
+    const handleCancel = () => {
+        setSelectedWorkspacesLocal([]);
+        setIsOpen(false);
+    };
 
     const handleClickWorkspace = (workspace: WorkspaceI) => {
-        const isWorkspaceSelected = selectedWorkspaces.includes(workspace);
+        const isWorkspaceSelected = selectedWorkspacesLocal.includes(workspace);
 
         if (hasSetWorkspaceNum) {
             if (isWorkspaceSelected) {
-                setSelectedWorkspaces((prev) =>
-                    prev.filter((item) => item !== workspace)
+                setSelectedWorkspacesLocal((prev: any) =>
+                    prev.filter((item: any) => item !== workspace)
                 );
                 maxWorkspaces && setMaxWorkspaces(false);
             } else {
-                if (selectedWorkspaces.length === workspaceNum) {
+                if (selectedWorkspacesLocal.length === workspaceNum) {
                     setMaxWorkspaces(true);
                 } else {
-                    setSelectedWorkspaces((prev) => [...prev, workspace]);
+                    setSelectedWorkspacesLocal((prev: any) => [
+                        ...prev,
+                        workspace,
+                    ]);
                 }
             }
         } else {
             let offset = 0;
             if (isWorkspaceSelected) {
-                setSelectedWorkspaces((prev) =>
-                    prev.filter((item) => item !== workspace)
+                setSelectedWorkspacesLocal((prev: any) =>
+                    prev.filter((item: any) => item !== workspace)
                 );
                 offset--;
             } else {
-                setSelectedWorkspaces((prev) => [...prev, workspace]);
+                setSelectedWorkspacesLocal((prev: any) => [...prev, workspace]);
                 offset++;
             }
-            setWorkspaceNum(selectedWorkspaces.length + offset);
+            setWorkspaceNum(selectedWorkspacesLocal.length + offset);
         }
     };
 
@@ -87,14 +116,25 @@ const WorkspaceModal = ({ room, isOpen, setIsOpen }: WorkspaceModalI) => {
                                 </Dialog.Title>
                                 {hasSetWorkspaceNum && (
                                     <p>
-                                        {selectedWorkspaces.length}/
+                                        {selectedWorkspacesLocal.length}/
                                         {workspaceNum}
                                     </p>
                                 )}
+                                <div className="flex gap-2">
+                                    <button onClick={handleSubmit}>
+                                        Set Workspaces
+                                    </button>
+                                    <button
+                                        onClick={handleCancel}
+                                        className="text-red-600"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
                                 <div className="mt-2 flex flex-wrap w-7/12">
                                     {room.workspaces.map((workspace) => {
                                         const isSelected =
-                                            selectedWorkspaces.includes(
+                                            selectedWorkspacesLocal.includes(
                                                 workspace
                                             );
 

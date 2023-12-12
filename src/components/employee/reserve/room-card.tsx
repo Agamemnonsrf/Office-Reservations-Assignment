@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { RoomI } from "../../../interfaces/db-intertface";
+import { BuildingI, RoomI } from "../../../interfaces/db-intertface";
 import WorkspaceModal from "./workspace-modal";
 
 interface RoomCardPropsI {
     room: RoomI;
+    building: BuildingI;
 }
 
-const RoomCard = ({ room }: RoomCardPropsI) => {
+const RoomCard = ({ room, building }: RoomCardPropsI) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -43,7 +44,12 @@ const RoomCard = ({ room }: RoomCardPropsI) => {
                     </div>
                 </div>
             </button>
-            <WorkspaceModal isOpen={isOpen} setIsOpen={setIsOpen} room={room} />
+            <WorkspaceModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                room={room}
+                building={building}
+            />
         </>
     );
 };
