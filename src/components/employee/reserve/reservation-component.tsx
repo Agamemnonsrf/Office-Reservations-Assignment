@@ -53,8 +53,11 @@ const ReservationComponent = () => {
                                 className="rounded-md p-2"
                             />
                         </div>
-                        <div className="flex flex-col">
-                            <label htmlFor="amount"># of Workspaces</label>
+                        <div className="flex flex-col items-center">
+                            <label htmlFor="amount">
+                                {hasSetWorkspaceNum && "Max"} Number of
+                                Workspaces
+                            </label>
                             <input
                                 type="number"
                                 id="amount"
