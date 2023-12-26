@@ -30,7 +30,7 @@ const RoomCard = ({ room, building }: RoomCardPropsI) => {
                         );
                     })}
                     <div className="flex items-baseline bg-neutral-700 rounded-md px-1 self-end">
-                        <h6>{room.workspaces.length}</h6>
+                        <h6>{room.workstations.length}</h6>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             height="13"

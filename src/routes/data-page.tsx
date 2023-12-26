@@ -3,11 +3,26 @@ import { getData } from "../mocks/utils";
 import DataTable from "../components/data-table/data-table";
 import { TableColumnI } from "../interfaces/table-interface";
 
-const Data = () => {
+type showType =
+    | "users"
+    | "reservations"
+    | "buildings"
+    | "rooms"
+    | "workstations";
+
+type Props = {
+    show: showType;
+};
+
+const DataPage = ({ show }: Props) => {
     const [data, setData] = useState<any[]>([]);
 
     useEffect(() => {
-        const mockData = getData("users");
+        const mockData = getData(show);
+        if ("error" in mockData) {
+            console.log(mockData.error);
+            return;
+        }
         setData(mockData);
     }, []);
 
@@ -35,18 +50,17 @@ const Data = () => {
             <DataTable
                 style={{ height: "500px" }}
                 columns={columns}
-                rows={[]}
+                rows={data}
                 inlineEditing={true}
-                onSave={(edited_row:any) => {
+                onSave={(edited_row: any) => {
                     console.log(edited_row);
                 }}
-                onDelete={(deleted_row:any) => {
+                onDelete={(deleted_row: any) => {
                     console.log(deleted_row);
                 }}
             />
-
         </div>
     );
 };
 
-export default Data;
+export default DataPage;

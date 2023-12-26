@@ -3,7 +3,7 @@ import { Fragment, useContext, useState } from "react";
 import {
     BuildingI,
     RoomI,
-    WorkspaceI,
+    WorkstationI,
 } from "../../../interfaces/db-intertface";
 import { ReserveContext } from "./reserve-context";
 
@@ -22,7 +22,7 @@ const WorkspaceModal = ({
 }: WorkspaceModalI) => {
     const [maxWorkspaces, setMaxWorkspaces] = useState(false);
     const [selectedWorkspacesLocal, setSelectedWorkspacesLocal] = useState<
-        WorkspaceI[]
+        WorkstationI[]
     >([]);
     const {
         setWorkspaceNum,
@@ -43,7 +43,7 @@ const WorkspaceModal = ({
         setIsOpen(false);
     };
 
-    const handleClickWorkspace = (workspace: WorkspaceI) => {
+    const handleClickWorkspace = (workspace: WorkstationI) => {
         const isWorkspaceSelected = selectedWorkspacesLocal.includes(workspace);
 
         if (hasSetWorkspaceNum) {
@@ -132,7 +132,7 @@ const WorkspaceModal = ({
                                     </button>
                                 </div>
                                 <div className="mt-2 flex flex-wrap w-7/12">
-                                    {room.workspaces.map((workspace) => {
+                                    {room.workstations.map((workspace) => {
                                         const isSelected =
                                             selectedWorkspacesLocal.includes(
                                                 workspace

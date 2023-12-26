@@ -1,79 +1,80 @@
 import "../App.css";
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { getData } from "../mocks/utils";
+import { useEffect, useContext } from "react";
+import UserContext from "../context/user/user-context";
 import { UserI } from "../interfaces/db-intertface";
-import { Outlet, useOutletContext } from "react-router-dom";
-import ReservationComponent from "../components/employee/reserve/reservation-component";
+import { Outlet } from "react-router-dom";
 
-type ContextType = { user: UserI | null };
+import { useNavigate, Link } from "react-router-dom";
 
 const Root = () => {
-    const [user, setUser] = useState<UserI | null>(null);
-    const [users, setUsers] = useState<UserI[]>([]);
-    const [openedDropdown, setOpenedDropdown] = useState(false);
+    const navigate = useNavigate();
+    const { user, isLoggedIn, logout } = useContext(UserContext);
 
     useEffect(() => {
-        const mockUsers = getData("users");
-        setUsers(mockUsers as UserI[]);
-    }, []);
+        if (!isLoggedIn) {
+            navigate("/login");
+        }
+    }, [isLoggedIn]);
+
+    if (!isLoggedIn) {
+        return <div className="bg-neutral-800 w-full h-full"></div>;
+    }
+
+    const rolesMap = (user: UserI) => {
+        const map = user.roles.map((role: string) => {
+            return (
+                <span
+                    className={`${
+                        role === "administrator"
+                            ? "bg-sky-800"
+                            : "bg-emerald-500"
+                    } p-1 rounded-md text-white text-xs`}
+                >
+                    {role}
+                </span>
+            );
+        });
+
+        return map;
+    };
 
     return (
         <>
             <div className="items-center w-full border border-amber-400 bg-amber-800 text-amber-400 rounded-md p-2 flex justify-between">
                 <h5>Office Reservations</h5>
-                {user ? (
-                    <div className="flex items-center justify-around px-5 w-1/2">
-                        <p>Logged in as: {user.name}</p>
-                        <button onClick={() => setUser(null)}>Log Out</button>
-                    </div>
-                ) : (
-                    <div className="flex items-center justify-around relative">
-                        <button
-                            onClick={() => setOpenedDropdown((prev) => !prev)}
-                            className="mr-20"
-                        >
-                            Log In
-                        </button>
+                <div className="flex items-center justify-around px-5 w-1/2">
+                    <p>
+                        Logged in as:{" "}
+                        <span className="text-white p-1 bg-neutral-800 rounded-md flex items-center justify-center gap-5">
+                            {user?.name}
+                            <div className="flex gap-2">
+                                {user && rolesMap(user)}
+                            </div>
+                        </span>
+                    </p>
 
-                        {openedDropdown ? (
-                            <ul className="menu">
-                                {users.map((user) => {
-                                    return (
-                                        <li key={user.id} className="menu-item">
-                                            <Link to="pick-role">
-                                                <button
-                                                    onClick={() => {
-                                                        setUser(user);
-                                                        setOpenedDropdown(
-                                                            false
-                                                        );
-                                                    }}
-                                                >
-                                                    {user.name}
-                                                </button>
-                                            </Link>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        ) : null}
-                    </div>
-                )}
-            </div>
-            {user ? (
-                <Outlet context={{ user } satisfies ContextType} />
-            ) : (
-                <div className="m-10">
-                    <ReservationComponent />
+                    <button onClick={logout}>Log Out</button>
                 </div>
-            )}
+            </div>
+            <div className="flex h-full">
+                <div className="flex flex-col h-full p-5 bg-neutral-800 gap-10">
+                    {user?.roles.includes("administrator") && (
+                        <Link to="dashboard">
+                            <h5>Dashboard</h5>
+                        </Link>
+                    )}
+                    {user?.roles.includes("employee") && (
+                        <Link to="reserve">
+                            <h5>Reserve</h5>
+                        </Link>
+                    )}
+                </div>
+                <div className="w-full">
+                    <Outlet />
+                </div>
+            </div>
         </>
     );
 };
-
-export function useUser() {
-    return useOutletContext<ContextType>();
-}
 
 export default Root;

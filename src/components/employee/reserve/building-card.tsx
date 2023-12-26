@@ -1,9 +1,5 @@
 import { Disclosure, Transition } from "@headlessui/react";
-import {
-    BuildingI,
-    RoomI,
-    WorkspaceI,
-} from "../../../interfaces/db-intertface";
+import { BuildingI, RoomI } from "../../../interfaces/db-intertface";
 import RoomCard from "./room-card";
 
 interface BuildingCardPropsI {
@@ -19,8 +15,8 @@ const BuildingCard = (props: BuildingCardPropsI) => {
         let workspaces = 0;
         let rooms = 0;
         props.rooms.forEach((room) => {
-            if (room.workspaces.length >= props.workspaceNum) {
-                workspaces += room.workspaces.length;
+            if (room.workstations.length >= props.workspaceNum) {
+                workspaces += room.workstations.length;
                 rooms++;
             }
         });
@@ -58,7 +54,7 @@ const BuildingCard = (props: BuildingCardPropsI) => {
                                 {props.rooms.map((room) => {
                                     if (props.workspaceNum) {
                                         if (
-                                            room.workspaces.length >=
+                                            room.workstations.length >=
                                             props.workspaceNum
                                         )
                                             return (

@@ -1,9 +1,10 @@
 // Mock data for users
 import {
     UserI,
-    WorkspaceI,
+    WorkstationI,
     RoomI,
     BuildingI,
+    ReservationI,
 } from "../interfaces/db-intertface";
 
 const users: UserI[] = [
@@ -38,8 +39,8 @@ const users: UserI[] = [
     { id: 29, name: "Matthew Hall", roles: ["employee"] },
 ];
 
-// Mock data for workspaces
-const workspaces: WorkspaceI[] = [
+// Mock data for workstations
+const workstations: WorkstationI[] = [
     { id: 1, name: "Workspace 1", desktops: 5 },
     { id: 2, name: "Workspace 2", desktops: 2 },
     { id: 3, name: "Workspace 3", desktops: 9 },
@@ -82,43 +83,43 @@ const rooms: RoomI[] = [
     {
         id: 1,
         name: "Room 1",
-        workspaces: [
-            workspaces[0],
-            workspaces[1],
-            workspaces[2],
-            workspaces[3],
-            workspaces[4],
-            workspaces[5],
-            workspaces[6],
-            workspaces[7],
-            workspaces[8],
-            workspaces[9],
-            workspaces[10],
+        workstations: [
+            workstations[0],
+            workstations[1],
+            workstations[2],
+            workstations[3],
+            workstations[4],
+            workstations[5],
+            workstations[6],
+            workstations[7],
+            workstations[8],
+            workstations[9],
+            workstations[10],
         ],
         features: ["whiteboard", "projector"],
     },
     {
         id: 2,
         name: "Room 2",
-        workspaces: [workspaces[2], workspaces[3]],
+        workstations: [workstations[2], workstations[3]],
         features: ["printer", "A/C", "whiteboard"],
     },
     {
         id: 3,
         name: "Room 3",
-        workspaces: [workspaces[4]],
+        workstations: [workstations[4]],
         features: ["projector"],
     },
     {
         id: 4,
         name: "Room 4",
-        workspaces: [workspaces[5], workspaces[6]],
+        workstations: [workstations[5], workstations[6]],
         features: ["A/C", "printer"],
     },
     {
         id: 5,
         name: "Room 5",
-        workspaces: [workspaces[7]],
+        workstations: [workstations[7]],
         features: ["coffee machine"],
     },
 ];
@@ -139,4 +140,103 @@ const buildings: BuildingI[] = [
     },
 ];
 
-export { users, buildings };
+const reservations: ReservationI[] = [
+    {
+        id: 1,
+        user: users[0],
+        workstation: workstations[0],
+        date: new Date(),
+    },
+    {
+        id: 2,
+        user: users[0],
+        workstation: workstations[1],
+        date: new Date(),
+    },
+    {
+        id: 3,
+        user: users[0],
+        workstation: workstations[2],
+        date: new Date(),
+    },
+    {
+        id: 4,
+        user: users[0],
+        workstation: workstations[3],
+        date: new Date(),
+    },
+    {
+        id: 5,
+        user: users[0],
+        workstation: workstations[4],
+        date: new Date(),
+    },
+    {
+        id: 6,
+        user: users[0],
+        workstation: workstations[5],
+        date: new Date(),
+    },
+    {
+        id: 7,
+        user: users[0],
+        workstation: workstations[6],
+        date: new Date(),
+    },
+    {
+        id: 8,
+        user: users[0],
+        workstation: workstations[7],
+        date: new Date(),
+    },
+    {
+        id: 9,
+        user: users[0],
+        workstation: workstations[8],
+        date: new Date(),
+    },
+    {
+        id: 10,
+        user: users[0],
+        workstation: workstations[9],
+        date: new Date(),
+    },
+    {
+        id: 11,
+        user: users[0],
+        workstation: workstations[10],
+        date: new Date(),
+    },
+    {
+        id: 12,
+        user: users[0],
+        workstation: workstations[11],
+        date: new Date(),
+    },
+    {
+        id: 13,
+        user: users[0],
+        workstation: workstations[12],
+        date: new Date(),
+    },
+    {
+        id: 14,
+        user: users[0],
+        workstation: workstations[13],
+        date: new Date(),
+    },
+    {
+        id: 15,
+        user: users[0],
+        workstation: workstations[14],
+        date: new Date(),
+    },
+    {
+        id: 16,
+        user: users[0],
+        workstation: workstations[15],
+        date: new Date(),
+    },
+];
+
+export { users, buildings, rooms, workstations, reservations };

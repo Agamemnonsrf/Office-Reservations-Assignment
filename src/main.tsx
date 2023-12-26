@@ -4,11 +4,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Root from "./routes/root";
 import AdministratorDashboard from "./routes/administrator";
-import WorkerWelcomePage from "./routes/worker";
-import Data from "./routes/data";
-import PickRole from "./routes/pick-role";
+import LoginScreen from "./routes/login";
+import ReservationComponent from "./components/employee/reserve/reservation-component";
+import UserProvider from "./context/user/user-provider";
+import DataPage from "./routes/data-page";
 
-const router = createBrowserRouter([
+const routerReworked = createBrowserRouter([
     {
         path: "/",
         element: <Root />,
@@ -18,33 +19,43 @@ const router = createBrowserRouter([
                 element: <AdministratorDashboard />,
                 children: [
                     {
-                        path: "offices",
-                        element: <Data />,
+                        path: "Users",
+                        element: <DataPage show={"users"} />,
                     },
                     {
-                        path: "workers",
-                        element: <Data />,
+                        path: "Reservations",
+                        element: <DataPage show={"reservations"} />,
                     },
                     {
-                        path: "reservations",
-                        element: <Data />,
+                        path: "Buildings",
+                        element: <DataPage show={"buildings"} />,
+                    },
+                    {
+                        path: "Rooms",
+                        element: <DataPage show={"rooms"} />,
+                    },
+                    {
+                        path: "Workstations",
+                        element: <DataPage show={"workstations"} />,
                     },
                 ],
             },
             {
                 path: "reserve",
-                element: <WorkerWelcomePage />,
-            },
-            {
-                path: "pick-role",
-                element: <PickRole />,
+                element: <ReservationComponent />,
             },
         ],
+    },
+    {
+        path: "/login",
+        element: <LoginScreen />,
     },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <UserProvider>
+            <RouterProvider router={routerReworked} />
+        </UserProvider>
     </React.StrictMode>
 );

@@ -3,8 +3,12 @@ import { Listbox, Transition } from "@headlessui/react";
 import { UserI } from "../../interfaces/db-intertface";
 import { getData } from "../../mocks/utils";
 
-const LoginDropdown: React.FC = () => {
-    const [user, setUser] = useState<UserI | null>(null);
+type Props = {
+    user: UserI | null;
+    setUser: React.Dispatch<React.SetStateAction<UserI | null>>;
+};
+
+const LoginDropdown = ({ user, setUser }: Props) => {
     const [users, setUsers] = useState<UserI[]>([]);
 
     useEffect(() => {
@@ -13,11 +17,13 @@ const LoginDropdown: React.FC = () => {
     }, []);
 
     const rolesMap = (user: UserI) => {
-        const map = user.roles.map((role: string, index) => {
+        const map = user.roles.map((role: string) => {
             return (
                 <span
                     className={`${
-                        index === 0 ? "bg-amber-500" : "bg-emerald-500"
+                        role === "administrator"
+                            ? "bg-sky-800"
+                            : "bg-emerald-500"
                     } p-1 rounded-md text-white text-xs mr-1`}
                 >
                     {role}
@@ -31,20 +37,16 @@ const LoginDropdown: React.FC = () => {
     return (
         <Listbox value={user} onChange={setUser}>
             <div className="relative mt-1 w-fit">
-                <Listbox.Button className="relative flex justify-between items-center w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                    <span className="block truncate text-black px-5">
+                <Listbox.Button className="relative flex justify-between items-center w-80 cursor-default rounded-lg border-neutral-600 bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                    <span className="block text-black px-5">
                         {user
                             ? user.name
                             : users.length !== 0
-                            ? users[0].name
+                            ? "Select User"
                             : ""}
                     </span>
                     <span>
-                        {user
-                            ? rolesMap(user)
-                            : users.length !== 0
-                            ? rolesMap(users[0])
-                            : ""}
+                        {user ? rolesMap(user) : users.length !== 0 ? "" : ""}
                     </span>
                 </Listbox.Button>
                 <Transition
