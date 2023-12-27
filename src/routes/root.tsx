@@ -59,14 +59,27 @@ const Root = () => {
             <div className="flex h-full">
                 <div className="flex flex-col h-full p-5 bg-neutral-800 gap-10">
                     {user?.roles.includes("administrator") && (
-                        <Link to="dashboard">
-                            <h5>Dashboard</h5>
-                        </Link>
+                        <button>
+                            <Link to="dashboard">
+                                <h5>Dashboard</h5>
+                            </Link>
+                        </button>
                     )}
                     {user?.roles.includes("employee") && (
-                        <Link to="reserve">
-                            <h5>Reserve</h5>
-                        </Link>
+                        <>
+                            <button>
+                                <Link to="reserve" className="">
+                                    <h5>Reserve</h5>
+                                </Link>
+                            </button>
+                            <button className="-mt-9 ">
+                                <Link to="my-reservations">
+                                    <p className="whitespace-nowrap">
+                                        My Reservations
+                                    </p>
+                                </Link>
+                            </button>
+                        </>
                     )}
                 </div>
                 <div className="w-full">

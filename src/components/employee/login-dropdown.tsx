@@ -37,7 +37,7 @@ const LoginDropdown = ({ user, setUser }: Props) => {
     return (
         <Listbox value={user} onChange={setUser}>
             <div className="relative mt-1 w-fit">
-                <Listbox.Button className="relative flex justify-between items-center w-80 cursor-default rounded-lg border-neutral-600 bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                <Listbox.Button className="relative flex justify-between cursor-pointer items-center w-80 rounded-lg border-neutral-600 bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                     <span className="block text-black px-5">
                         {user
                             ? user.name
@@ -60,7 +60,7 @@ const LoginDropdown = ({ user, setUser }: Props) => {
                             <Listbox.Option
                                 key={userIdx}
                                 className={({ active }) =>
-                                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                    `relative cursor-pointer select-none py-2 pl-10 pr-4 ${
                                         active
                                             ? "bg-amber-100 text-amber-900"
                                             : "text-gray-900"
