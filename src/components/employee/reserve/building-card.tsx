@@ -24,7 +24,7 @@ const BuildingCard = (props: BuildingCardPropsI) => {
     };
 
     return (
-        <div className="w-full px-4 pt-4">
+        <div className="w-1/2 px-4 pt-4">
             <div className="mx-auto w-full max-w-md rounded-2xl bg-blue-600 p-2">
                 <Disclosure>
                     <Disclosure.Button className="flex w-full justify-between rounded-lg px-4 py-2 text-left text-sm font-medium  focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">

@@ -138,6 +138,54 @@ const buildings: BuildingI[] = [
         rooms: [rooms[3], rooms[4]],
         features: ["bike stand", "underground garage", "cinema"],
     },
+    {
+        id: 3,
+        name: "Building C",
+        rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4]],
+        features: ["parking lot", "restaurant", "bike stand", "cinema"],
+    },
+    {
+        id: 4,
+        name: "Building D",
+        rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4]],
+        features: ["parking lot", "restaurant", "bike stand", "cinema"],
+    },
+    {
+        id: 5,
+        name: "Building E",
+        rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4]],
+        features: ["restaurant", "bike stand", "cinema"],
+    },
+    {
+        id: 6,
+        name: "Building F",
+        rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4]],
+        features: ["parking lot", "bike stand", "cinema"],
+    },
+    {
+        id: 7,
+        name: "Building G",
+        rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4]],
+        features: ["parking lot", "restaurant", "bike stand", "cinema"],
+    },
+    {
+        id: 8,
+        name: "Building H",
+        rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4]],
+        features: ["parking lot", "restaurant", "cinema"],
+    },
+    {
+        id: 9,
+        name: "Building I",
+        rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4]],
+        features: ["parking lot", "restaurant", "bike stand"],
+    },
+    {
+        id: 10,
+        name: "Building J",
+        rooms: [rooms[0], rooms[1], rooms[2], rooms[3], rooms[4]],
+        features: ["parking lot", "restaurant", "bike stand", "cinema"],
+    },
 ];
 
 const reservations: ReservationI[] = [

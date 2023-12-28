@@ -40,11 +40,11 @@ const ReservationComponent = () => {
                 setSelectedWorkspaces,
             }}
         >
-            <div className="w-full h-full flex flex-col justify-center items-center">
-                <h2>Make a Reservation</h2>
-                <div className="w-1/2 bg-neutral-900 rounded-lg p-5 relative">
+            <div className="w-full h-full flex flex-col justify-start items-center">
+                <div className="w-full bg-neutral-900 rounded-lg p-5 relative">
+                    <h2>Make a Reservation</h2>
                     <Filters />
-                    <div>
+                    <div className="">
                         <div className="flex justify-around m-5">
                             <div className="flex flex-col">
                                 <label htmlFor="date">Date</label>
@@ -109,7 +109,7 @@ const ReservationComponent = () => {
                                 </div>
                             </div>
                         )}
-                        <div className="m-2">
+                        <div className="m-2 w-full flex flex-wrap">
                             {buildings.map((building) => {
                                 return (
                                     <BuildingCard
