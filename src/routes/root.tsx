@@ -39,7 +39,7 @@ const Root = () => {
     };
 
     return (
-        <>
+        <div className="h-full">
             <div className="items-center w-full border border-amber-400 bg-amber-800 text-amber-400 rounded-md p-2 flex justify-between">
                 <h5>Office Reservations</h5>
                 <div className="flex items-center justify-around px-5 w-1/2">
@@ -86,7 +86,7 @@ const Root = () => {
                     <Outlet />
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
