@@ -8,6 +8,7 @@ import LoginScreen from "./routes/login";
 import ReservationComponent from "./components/employee/reserve/reservation-component";
 import UserProvider from "./context/user/user-provider";
 import DataPage from "./routes/data-page";
+import MyReservations from "./routes/my-reservations";
 
 const routerReworked = createBrowserRouter([
     {
@@ -19,30 +20,34 @@ const routerReworked = createBrowserRouter([
                 element: <AdministratorDashboard />,
                 children: [
                     {
-                        path: "Users",
+                        path: "users",
                         element: <DataPage show={"users"} />,
                     },
                     {
-                        path: "Reservations",
+                        path: "reservations",
                         element: <DataPage show={"reservations"} />,
                     },
                     {
-                        path: "Buildings",
+                        path: "buildings",
                         element: <DataPage show={"buildings"} />,
                     },
                     {
-                        path: "Rooms",
+                        path: "rooms",
                         element: <DataPage show={"rooms"} />,
                     },
                     {
-                        path: "Workstations",
-                        element: <DataPage show={"workstations"} />,
+                        path: "workspaces",
+                        element: <DataPage show={"workspaces"} />,
                     },
                 ],
             },
             {
                 path: "reserve",
                 element: <ReservationComponent />,
+            },
+            {
+                path: "my-reservations",
+                element: <MyReservations />,
             },
         ],
     },

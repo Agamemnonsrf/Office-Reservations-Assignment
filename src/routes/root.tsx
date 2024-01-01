@@ -24,11 +24,11 @@ const Root = () => {
         const map = user.roles.map((role: string) => {
             return (
                 <span
-                    className={`${
-                        role === "administrator"
-                            ? "bg-sky-800"
-                            : "bg-emerald-500"
-                    } p-1 rounded-md text-white text-xs`}
+                    className={`${role === "administrator"
+                        ? "bg-sky-800"
+                        : "bg-emerald-500"
+                        } p-1 rounded-md text-white text-xs`}
+                    key={role}
                 >
                     {role}
                 </span>
@@ -40,16 +40,15 @@ const Root = () => {
 
     return (
         <div className="h-full">
-            <div className="items-center w-full border border-amber-400 bg-amber-800 text-amber-400 rounded-md p-2 flex justify-between">
+            <div className="items-center w-full  bg-blue-600  rounded-md p-2 flex justify-between">
                 <h5>Office Reservations</h5>
                 <div className="flex items-center justify-around px-5 w-1/2">
                     <p>
-                        Logged in as:{" "}
-                        <span className="text-white p-1 bg-neutral-800 rounded-md flex items-center justify-center gap-5">
-                            {user?.name}
-                            <div className="flex gap-2">
+                        <span className="text-white p-1 bg-neutral-800 rounded-md flex items-center justify-center">
+                            <span className="text-center w-full ml-1 mr-2">{user?.name}</span>
+                            <span className="flex gap-1">
                                 {user && rolesMap(user)}
-                            </div>
+                            </span>
                         </span>
                     </p>
 
@@ -57,7 +56,7 @@ const Root = () => {
                 </div>
             </div>
             <div className="flex h-full">
-                <div className="flex flex-col h-full p-5 bg-neutral-800 gap-10">
+                <div className="flex flex-col h-fit p-5  gap-10">
                     {user?.roles.includes("administrator") && (
                         <button>
                             <Link to="dashboard">

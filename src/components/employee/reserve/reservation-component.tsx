@@ -4,10 +4,11 @@ import Filters from "./filters";
 import {
     BuildingI,
     RoomI,
-    WorkstationI,
+    WorkspaceI,
 } from "../../../interfaces/db-intertface";
 import { getData } from "../../../mocks/utils";
 import { ReserveContext } from "./reserve-context";
+import { set } from "react-hook-form";
 
 type RoomBuilding = {
     building: BuildingI;
@@ -19,11 +20,12 @@ const ReservationComponent = () => {
     const [workspaceNum, setWorkspaceNum] = useState<number>(0);
     const [hasSetWorkspaceNum, setHasSetWorkspaceNum] = useState(false);
     const [selectedWorkspaces, setSelectedWorkspaces] = useState<
-        WorkstationI[]
+        WorkspaceI[]
     >([]);
     const [roomBuilding, setRoomBuilding] = useState<RoomBuilding | undefined>(
         undefined
     );
+    const [selectedDate, setSelectedDate] = useState<string>("YYYY-MM-DD");
 
     useEffect(() => {
         const mockBuildings = getData("buildings");
@@ -38,6 +40,7 @@ const ReservationComponent = () => {
                 hasSetWorkspaceNum,
                 setRoomBuilding,
                 setSelectedWorkspaces,
+                selectedDate,
             }}
         >
             <div className="w-full h-full flex flex-col justify-start items-center">
@@ -52,12 +55,16 @@ const ReservationComponent = () => {
                                     type="date"
                                     id="date"
                                     className="rounded-md p-2"
+                                    value={selectedDate}
+                                    onChange={(e) =>
+                                        setSelectedDate(e.target.value)
+                                    }
                                 />
                             </div>
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-col">
                                 <label htmlFor="amount">
-                                    {hasSetWorkspaceNum && "Max"} Number of
-                                    Workspaces
+                                    Number of Workspaces
+                                    {hasSetWorkspaceNum && " (Max)"}
                                 </label>
                                 <input
                                     type="number"
@@ -89,14 +96,14 @@ const ReservationComponent = () => {
                                             "
                                                     key={workspace.id}
                                                 >
-                                                    {workspace.name}
+                                                    {`${workspace.room}-${workspace.id}`}
                                                 </li>
                                             );
                                         })}
                                     </ul>
                                     <p>
-                                        From <b>{roomBuilding.room.name}</b> in{" "}
-                                        <b>{roomBuilding.building.name}</b>
+                                        From <b>Room {roomBuilding.room.id}</b>{" "}
+                                        in <b>{roomBuilding.building.name}</b>
                                     </p>
                                     <button
                                         onClick={() =>
@@ -115,7 +122,11 @@ const ReservationComponent = () => {
                                     <BuildingCard
                                         key={building.id}
                                         name={building.name}
-                                        rooms={building.rooms}
+                                        rooms={
+                                            getData("rooms", {
+                                                building: building.id,
+                                            }) as RoomI[]
+                                        }
                                         building={building}
                                         workspaceNum={workspaceNum}
                                     />

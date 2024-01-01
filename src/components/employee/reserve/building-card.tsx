@@ -1,6 +1,7 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { BuildingI, RoomI } from "../../../interfaces/db-intertface";
 import RoomCard from "./room-card";
+import { getData } from "../../../mocks/utils";
 
 interface BuildingCardPropsI {
     name: string;
@@ -15,15 +16,18 @@ const BuildingCard = (props: BuildingCardPropsI) => {
         let workspaces = 0;
         let rooms = 0;
         props.rooms.forEach((room) => {
-            if (room.workstations.length >= props.workspaceNum) {
-                workspaces += room.workstations.length;
+            if (
+                getData("workspaces", { room: room.id }).length >=
+                props.workspaceNum
+            ) {
+                workspaces += getData("workspaces", { room: room.id }).length;
                 rooms++;
             }
         });
         return { workspaces, rooms };
     };
 
-    return (
+    if (getWorkspacesLength().workspaces !== 0) return (
         <div className="w-1/2 px-4 pt-4">
             <div className="mx-auto w-full max-w-md rounded-2xl bg-blue-600 p-2">
                 <Disclosure>
@@ -35,7 +39,10 @@ const BuildingCard = (props: BuildingCardPropsI) => {
                         </span>
                         <span>
                             {props.building.features.map((feature) => (
-                                <p className="p-1 bg-white rounded-md text-black m-1">
+                                <p
+                                    className="p-1 bg-white rounded-md text-black m-1"
+                                    key={feature}
+                                >
                                     {feature}
                                 </p>
                             ))}
@@ -54,11 +61,13 @@ const BuildingCard = (props: BuildingCardPropsI) => {
                                 {props.rooms.map((room) => {
                                     if (props.workspaceNum) {
                                         if (
-                                            room.workstations.length >=
-                                            props.workspaceNum
+                                            getData("workspaces", {
+                                                room: room.id,
+                                            }).length >= props.workspaceNum
                                         )
                                             return (
                                                 <RoomCard
+                                                    key={room.id}
                                                     room={room}
                                                     building={props.building}
                                                 />
@@ -66,6 +75,7 @@ const BuildingCard = (props: BuildingCardPropsI) => {
                                     } else
                                         return (
                                             <RoomCard
+                                                key={room.id}
                                                 room={room}
                                                 building={props.building}
                                             />

@@ -25,6 +25,7 @@ const LoginDropdown = ({ user, setUser }: Props) => {
                             ? "bg-sky-800"
                             : "bg-emerald-500"
                     } p-1 rounded-md text-white text-xs mr-1`}
+                    key={role}
                 >
                     {role}
                 </span>

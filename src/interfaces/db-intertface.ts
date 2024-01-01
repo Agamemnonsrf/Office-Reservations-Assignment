@@ -6,31 +6,32 @@ interface UserI {
     roles: roles[];
 }
 
-interface WorkstationI {
+interface WorkspaceI {
     id: number;
-    name: string;
     desktops: number;
+    room: number;
+    building: number;
 }
 
 interface RoomI {
     id: number;
-    name: string;
-    workstations: WorkstationI[];
+    building: number;
     features: string[];
 }
 
 interface BuildingI {
     id: number;
     name: string;
-    rooms: RoomI[];
     features: string[];
 }
 
 interface ReservationI {
     id: number;
-    user: UserI;
-    workstation: WorkstationI;
+    user: number;
+    workspaces: number[];
+    room: number;
+    building: number;
     date: Date;
 }
 
-export type { UserI, WorkstationI, RoomI, BuildingI, ReservationI, roles };
+export type { UserI, WorkspaceI, RoomI, BuildingI, ReservationI, roles };

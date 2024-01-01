@@ -8,7 +8,7 @@ type showType =
     | "reservations"
     | "buildings"
     | "rooms"
-    | "workstations";
+    | "workspaces";
 
 type Props = {
     show: showType;

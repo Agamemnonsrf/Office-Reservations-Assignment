@@ -16,7 +16,7 @@ const LoginScreen: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-neutral-800">
+        <div className="flex flex-col items-center justify-center h-screen bg-neutral-950">
             <h1 className="text-3xl font-bold mb-4">
                 Welcome, please login first
             </h1>

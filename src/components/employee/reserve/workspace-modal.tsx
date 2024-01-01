@@ -3,9 +3,10 @@ import { Fragment, useContext, useState } from "react";
 import {
     BuildingI,
     RoomI,
-    WorkstationI,
+    WorkspaceI,
 } from "../../../interfaces/db-intertface";
 import { ReserveContext } from "./reserve-context";
+import { getData } from "../../../mocks/utils";
 
 interface WorkspaceModalI {
     room: RoomI;
@@ -13,6 +14,10 @@ interface WorkspaceModalI {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
 }
+
+const dataWrapper = (id: number): WorkspaceI[] => {
+    return getData("workspaces", { room: id }) as WorkspaceI[];
+};
 
 const WorkspaceModal = ({
     room,
@@ -22,7 +27,7 @@ const WorkspaceModal = ({
 }: WorkspaceModalI) => {
     const [maxWorkspaces, setMaxWorkspaces] = useState(false);
     const [selectedWorkspacesLocal, setSelectedWorkspacesLocal] = useState<
-        WorkstationI[]
+        WorkspaceI[]
     >([]);
     const {
         setWorkspaceNum,
@@ -43,7 +48,7 @@ const WorkspaceModal = ({
         setIsOpen(false);
     };
 
-    const handleClickWorkspace = (workspace: WorkstationI) => {
+    const handleClickWorkspace = (workspace: WorkspaceI) => {
         const isWorkspaceSelected = selectedWorkspacesLocal.includes(workspace);
 
         if (hasSetWorkspaceNum) {
@@ -112,7 +117,7 @@ const WorkspaceModal = ({
                                     as="h3"
                                     className="text-lg font-medium leading-6"
                                 >
-                                    {room.name}: Select a Workspace
+                                    Room {room.id}: Select a Workspace
                                 </Dialog.Title>
                                 {hasSetWorkspaceNum && (
                                     <p>
@@ -132,7 +137,7 @@ const WorkspaceModal = ({
                                     </button>
                                 </div>
                                 <div className="mt-2 flex flex-wrap w-7/12">
-                                    {room.workstations.map((workspace) => {
+                                    {dataWrapper(room.id).map((workspace) => {
                                         const isSelected =
                                             selectedWorkspacesLocal.includes(
                                                 workspace
@@ -140,18 +145,20 @@ const WorkspaceModal = ({
 
                                         return (
                                             <button
+                                                key={workspace.id}
                                                 onClick={() =>
                                                     handleClickWorkspace(
                                                         workspace
                                                     )
                                                 }
-                                                className={`${
-                                                    isSelected &&
+                                                className={`${isSelected &&
                                                     "border-blue-500"
-                                                } bg-neutral-900 pl-6 py-2 m-2 border-2 rounded-md flex flex-col justify-center w-fit focus:outline-none`}
+                                                    } bg-neutral-900 pl-6 py-2 m-2 border-2 rounded-md flex flex-col justify-center w-fit focus:outline-none`}
                                             >
                                                 <div className="flex justify-between items-baseline w-full">
-                                                    <p>{workspace.name}</p>
+                                                    <p>
+                                                        Workspace {workspace.id}
+                                                    </p>
                                                 </div>
                                                 <div className="flex gap-2">
                                                     <div className="flex items-baseline bg-neutral-700 rounded-md px-1 self-end">

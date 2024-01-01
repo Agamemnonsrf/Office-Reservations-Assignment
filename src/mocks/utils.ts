@@ -1,16 +1,16 @@
 // Function to get data
-import { users, buildings, rooms, workstations, reservations } from "./data.js";
+import { users, buildings, rooms, workspaces, reservations } from "./data.js";
 //import interfaces
 import {
     BuildingI,
     RoomI,
     roles,
     UserI,
-    WorkstationI,
+    WorkspaceI,
     ReservationI,
 } from "../interfaces/db-intertface.js";
 
-type action = "users" | "buildings" | "rooms" | "workstations" | "reservations";
+type action = "users" | "buildings" | "rooms" | "workspaces" | "reservations";
 type filter =
     | { id: number }
     | { name: string }
@@ -18,28 +18,34 @@ type filter =
     | { desktops: number }
     | { features: string[] }
     | { date: Date }
-    | { user: UserI }
-    | { workstation: WorkstationI };
+    | { user: number }
+    | { workspace: number }
+    | { building: number }
+    | { room: number };
 
 type filter2 = filter | null;
-type data = BuildingI | RoomI | WorkstationI | UserI | ReservationI;
-type error = { error: string };
+type data = BuildingI | RoomI | WorkspaceI | UserI | ReservationI;
 
-const filterData = (data: data[], filter: filter): data[] | error => {
+const filterData = (data: data[], filter: filter): data[] => {
     const filterProperty = Object.keys(filter)[0];
 
     if (data[0].hasOwnProperty(filterProperty)) {
         const dataFiltered = data.filter(
-            (item) =>
-                item[filterProperty as keyof data] ===
-                filter[filterProperty as keyof filter]
+            (item) => {
+                if (filterProperty === "date") {
+                    return (item[filterProperty as keyof data] as unknown as Date).getTime() ===
+                        (filter[filterProperty as keyof filter] as unknown as Date).getTime();
+                }
+                return item[filterProperty as keyof data] ===
+                    filter[filterProperty as keyof filter];
+            }
         );
-        return dataFiltered.length ? dataFiltered : { error: "No data found" };
+        return dataFiltered.length ? dataFiltered : [];
     }
-    return { error: "Invalid filter" };
+    return [];
 };
 
-const getData = (action: action, filter: filter2 = null): data[] | error => {
+const getData = (action: action, filter: filter2 = null): data[] => {
     switch (action) {
         case "users":
             return filter ? filterData(users, filter) : users;
@@ -47,12 +53,12 @@ const getData = (action: action, filter: filter2 = null): data[] | error => {
             return filter ? filterData(buildings, filter) : buildings;
         case "rooms":
             return filter ? filterData(rooms, filter) : rooms;
-        case "workstations":
-            return filter ? filterData(workstations, filter) : workstations;
+        case "workspaces":
+            return filter ? filterData(workspaces, filter) : workspaces;
         case "reservations":
             return filter ? filterData(reservations, filter) : reservations;
         default:
-            return { error: "No such action" };
+            return [];
     }
 };
 

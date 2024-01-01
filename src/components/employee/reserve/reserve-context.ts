@@ -1,9 +1,5 @@
 import { createContext } from "react";
-import {
-    BuildingI,
-    RoomI,
-    WorkspaceI,
-} from "../../../interfaces/db-intertface";
+import { BuildingI, RoomI } from "../../../interfaces/db-intertface";
 
 type RoomBuilding = {
     building: BuildingI;
@@ -15,7 +11,7 @@ interface ReserveContextI {
     hasSetWorkspaceNum: boolean;
     setRoomBuilding: (roomBuilding: RoomBuilding) => void;
     setSelectedWorkspaces: any;
-    // Include other properties as needed
+    selectedDate: string;
 }
 
 export const ReserveContext = createContext<ReserveContextI>(
