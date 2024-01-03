@@ -73,6 +73,7 @@ const RoomCard = ({ room, building }: RoomCardPropsI) => {
                 setIsOpen={setIsOpen}
                 room={room}
                 building={building}
+                getFilteredWorkspaces={getFilteredWorkspaces}
             />
         </>
     );

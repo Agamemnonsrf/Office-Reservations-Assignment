@@ -1,4 +1,27 @@
 import { Disclosure, Transition } from "@headlessui/react";
+import ChipSelector from "./chip-selector";
+import { getData } from "../../../mocks/utils";
+import { BuildingI } from "../../../interfaces/db-intertface";
+
+const getBuildingFeatures = () => {
+    let features: string[] = [];
+    (getData("buildings") as BuildingI[]).forEach((building) => {
+        building.features.forEach((feature) => {
+            if (!features.includes(feature)) features.push(feature);
+        });
+    });
+    return features;
+}
+
+const getRoomFeatures = () => {
+    let features: string[] = [];
+    (getData("rooms") as BuildingI[]).forEach((room) => {
+        room.features.forEach((feature) => {
+            if (!features.includes(feature)) features.push(feature);
+        });
+    });
+    return features;
+}
 
 const Filters = () => {
     return (
@@ -30,37 +53,25 @@ const Filters = () => {
                         leaveTo="transform scale-95 opacity-0"
                     >
                         <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm">
-                            <form className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
                                 <div className="flex flex-col">
-                                    <label htmlFor="building-features">
+                                    <p >
                                         Building Features
-                                    </label>
-                                    <select
-                                        name="building-features"
-                                        id="building-features"
-                                        className="rounded-md p-2"
-                                    >
-                                        {" "}
-                                    </select>
+                                    </p>
+                                    <ChipSelector chips={getBuildingFeatures()} />
                                 </div>
                                 <div className="flex flex-col">
-                                    <label htmlFor="room-features">
+                                    <p >
                                         Room Features
-                                    </label>
-                                    <select
-                                        name="room-features"
-                                        id="room-features"
-                                        className="rounded-md p-2"
-                                    >
-                                        {" "}
-                                    </select>
+                                    </p>
+                                    <ChipSelector chips={getRoomFeatures()} />
                                 </div>
 
                                 <div className="flex justify-between items-end">
                                     <div className="flex flex-col">
-                                        <label htmlFor="workspace-desktops">
+                                        <p >
                                             Workspace Desktops
-                                        </label>
+                                        </p>
                                         <input
                                             type="number"
                                             id="workspace-desktops"
@@ -69,14 +80,10 @@ const Filters = () => {
                                         />
                                     </div>
                                     <button className="">
-                                        <input
-                                            type="submit"
-                                            value="Apply"
-                                            className="rounded-md w-full h-full cursor-pointer"
-                                        />
+                                        Apply
                                     </button>
                                 </div>
-                            </form>
+                            </div>
                         </Disclosure.Panel>
                     </Transition>
                 </Disclosure>

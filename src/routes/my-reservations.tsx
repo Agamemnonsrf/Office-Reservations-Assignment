@@ -40,7 +40,8 @@ const MyReservations = () => {
                     .map((reservation) => (
                         <div key={reservation.id} className="w-1/2 m-5">
                             <h3 className="text-3xl font-bold mb-4">
-                                {reservation.date.toDateString()}
+                                {reservation.date.toDateString()} {reservation.date.getTime() < new Date().getTime() && "(Passed)"
+                                }
                             </h3>
                             <div className="p-5 bg-neutral-800 rounded-lg relative">
                                 <button className="absolute right-1 bottom-1">

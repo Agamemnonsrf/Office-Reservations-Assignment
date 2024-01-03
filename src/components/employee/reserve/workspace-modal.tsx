@@ -13,17 +13,17 @@ interface WorkspaceModalI {
     building: BuildingI;
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    getFilteredWorkspaces: () => WorkspaceI[];
 }
 
-const dataWrapper = (id: number): WorkspaceI[] => {
-    return getData("workspaces", { room: id }) as WorkspaceI[];
-};
+
 
 const WorkspaceModal = ({
     room,
     building,
     isOpen,
     setIsOpen,
+    getFilteredWorkspaces
 }: WorkspaceModalI) => {
     const [maxWorkspaces, setMaxWorkspaces] = useState(false);
     const [selectedWorkspacesLocal, setSelectedWorkspacesLocal] = useState<
@@ -137,7 +137,7 @@ const WorkspaceModal = ({
                                     </button>
                                 </div>
                                 <div className="mt-2 flex flex-wrap w-7/12">
-                                    {dataWrapper(room.id).map((workspace) => {
+                                    {getFilteredWorkspaces().map((workspace) => {
                                         const isSelected =
                                             selectedWorkspacesLocal.includes(
                                                 workspace
