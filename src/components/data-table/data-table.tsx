@@ -20,7 +20,7 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
 
     return (
         <div className="p-2 w-full  h-52">
-            <div className="w-full align-middle block shadow overflow-y-auto border-b border-gray-200 rounded-lg" style={props.style ?? {height:500}}>
+            <div className="w-full align-middle block shadow overflow-y-auto border-b border-gray-200 rounded-lg bg-white" style={props.style ?? {height:500}}>
                 <div>
                     <table className="divide-y divide-gray-200 w-full table-auto">
                         <thead className="bg-gray-50 sticky top-0">
