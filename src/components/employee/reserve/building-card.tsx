@@ -12,7 +12,6 @@ interface BuildingCardPropsI {
 
 const BuildingCard = (props: BuildingCardPropsI) => {
     const getWorkspacesLength = () => {
-        //return an object that looks like this: {workspaces: 0, rooms: 0}, the workspaces is the accumulated number of workspaces in all rooms, but I also want to do this calculation only for the rooms that have more workspaces than workspaceNum
         let workspaces = 0;
         let rooms = 0;
         props.rooms.forEach((room) => {

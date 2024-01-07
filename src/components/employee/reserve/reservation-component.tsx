@@ -19,13 +19,29 @@ const ReservationComponent = () => {
     const [buildings, setBuildings] = useState<BuildingI[]>([]);
     const [workspaceNum, setWorkspaceNum] = useState<number>(0);
     const [hasSetWorkspaceNum, setHasSetWorkspaceNum] = useState(false);
-    const [selectedWorkspaces, setSelectedWorkspaces] = useState<
-        WorkspaceI[]
-    >([]);
+    const [selectedWorkspaces, setSelectedWorkspaces] = useState<WorkspaceI[]>(
+        []
+    );
     const [roomBuilding, setRoomBuilding] = useState<RoomBuilding | undefined>(
         undefined
     );
-    const [selectedDate, setSelectedDate] = useState<string>("YYYY-MM-DD");
+    const [selectedDate, setSelectedDate] = useState<string>("yyyy-MM-dd");
+
+    type Filters = {
+        building: string[];
+        room: string[];
+        workspaces: number;
+    };
+    const [filters, setFilters] = useState<Filters>({
+        building: [],
+        room: [],
+        workspaces: 0,
+    });
+
+    const filteredBuildings = buildings
+        .filter((building) =>
+            filters.building.length ? filters.building.every(filter => building.features.includes(filter)) : true
+        )
 
     useEffect(() => {
         const mockBuildings = getData("buildings");
@@ -41,6 +57,8 @@ const ReservationComponent = () => {
                 setRoomBuilding,
                 setSelectedWorkspaces,
                 selectedDate,
+                filters,
+                setFilters,
             }}
         >
             <div className="w-full h-full flex flex-col justify-start items-center">
@@ -117,7 +135,7 @@ const ReservationComponent = () => {
                             </div>
                         )}
                         <div className="m-2 w-full flex flex-wrap">
-                            {buildings.map((building) => {
+                            {filteredBuildings.length === 0 ? (<h3 className="text-center">0 Workspaces Available</h3>) : filteredBuildings.map((building) => {
                                 return (
                                     <BuildingCard
                                         key={building.id}

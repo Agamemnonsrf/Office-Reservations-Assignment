@@ -1,7 +1,9 @@
+import { useState, useContext } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import ChipSelector from "./chip-selector";
 import { getData } from "../../../mocks/utils";
 import { BuildingI } from "../../../interfaces/db-intertface";
+import { ReserveContext } from "./reserve-context";
 
 const getBuildingFeatures = () => {
     let features: string[] = [];
@@ -24,6 +26,20 @@ const getRoomFeatures = () => {
 }
 
 const Filters = () => {
+    const [selectedBuildingFeatures, setSelectedBuildingFeatures] = useState<string[]>([]);
+    const [selectedRoomFeatures, setSelectedRoomFeatures] = useState<string[]>([]);
+    const [workspaceNum, setWorkspaceNum] = useState<number>(0);
+
+    const { filters, setFilters } = useContext(ReserveContext);
+
+    const handleApplyFilters = () => {
+        setFilters({
+            building: selectedBuildingFeatures,
+            room: selectedRoomFeatures,
+            workspaces: workspaceNum
+        })
+    }
+
     return (
         <div className="w-full px-4 pt-4">
             <div className="mx-auto w-full max-w-md bg-neutral-800 rounded-md p-2">
@@ -58,13 +74,13 @@ const Filters = () => {
                                     <p >
                                         Building Features
                                     </p>
-                                    <ChipSelector chips={getBuildingFeatures()} />
+                                    <ChipSelector chips={getBuildingFeatures()} selectedChips={selectedBuildingFeatures} setSelectedChips={setSelectedBuildingFeatures} />
                                 </div>
                                 <div className="flex flex-col">
                                     <p >
                                         Room Features
                                     </p>
-                                    <ChipSelector chips={getRoomFeatures()} />
+                                    <ChipSelector chips={getRoomFeatures()} selectedChips={selectedRoomFeatures} setSelectedChips={setSelectedRoomFeatures} />
                                 </div>
 
                                 <div className="flex justify-between items-end">
@@ -77,11 +93,17 @@ const Filters = () => {
                                             id="workspace-desktops"
                                             className="rounded-md p-2 w-20"
                                             min="1"
+                                            onChange={(e) => {
+                                                setWorkspaceNum(Number(e.target.value));
+                                            }}
                                         />
                                     </div>
-                                    <button className="">
+                                    <button onClick={handleApplyFilters}>
                                         Apply
                                     </button>
+                                    <span>
+                                        {JSON.stringify(filters)}
+                                    </span>
                                 </div>
                             </div>
                         </Disclosure.Panel>

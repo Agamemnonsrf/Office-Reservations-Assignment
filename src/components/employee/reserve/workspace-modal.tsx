@@ -157,7 +157,7 @@ const WorkspaceModal = ({
                                             >
                                                 <div className="flex justify-between items-baseline w-full">
                                                     <p>
-                                                        Workspace {workspace.id}
+                                                        Workspace {workspace.room}-{workspace.id}
                                                     </p>
                                                 </div>
                                                 <div className="flex gap-2">
