@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import BuildingCard from "./building-card";
 import Filters from "./filters";
 import {
@@ -8,7 +8,7 @@ import {
 } from "../../../interfaces/db-intertface";
 import { getData } from "../../../mocks/utils";
 import { ReserveContext } from "./reserve-context";
-import { set } from "react-hook-form";
+import ConfirmModal from "./confirm-modal";
 
 type RoomBuilding = {
     building: BuildingI;
@@ -25,7 +25,8 @@ const ReservationComponent = () => {
     const [roomBuilding, setRoomBuilding] = useState<RoomBuilding | undefined>(
         undefined
     );
-    const [selectedDate, setSelectedDate] = useState<string>("yyyy-MM-dd");
+    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
     type Filters = {
         building: string[];
@@ -104,7 +105,6 @@ const ReservationComponent = () => {
                                     <ul
                                         className="
                                     flex flex-wrap gap-2
-                
                                 "
                                     >
                                         {selectedWorkspaces.map((workspace) => {
@@ -121,16 +121,21 @@ const ReservationComponent = () => {
                                     </ul>
                                     <p>
                                         From <b>Room {roomBuilding.room.id}</b>{" "}
-                                        in <b>{roomBuilding.building.name}</b>
+                                        in <b>{roomBuilding.building.name}</b>{" "}
+                                        on <b>{selectedDate}</b>
                                     </p>
                                     <button
                                         onClick={() =>
                                             setSelectedWorkspaces([])
                                         }
-                                        className="text-xs bg-neutral-900 p-1 rounded-md text-red-600 absolute right-2 bottom-2"
+                                        className="text-xs bg-neutral-900 p-1 rounded-md text-red-600 absolute right-2 top-2"
                                     >
                                         Clear &times;
                                     </button>
+                                    <button className="mt-3" onClick={() => {
+                                        setShowConfirmModal(true);
+                                    }}>Make Reservation</button>
+                                    <ConfirmModal isShow={showConfirmModal} setIsShow={setShowConfirmModal} />
                                 </div>
                             </div>
                         )}

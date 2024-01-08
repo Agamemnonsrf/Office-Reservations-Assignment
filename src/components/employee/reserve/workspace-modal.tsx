@@ -120,9 +120,9 @@ const WorkspaceModal = ({
                                     Room {room.id}: Select a Workspace
                                 </Dialog.Title>
                                 {hasSetWorkspaceNum && (
-                                    <p>
+                                    <p className="p-1 my-2">
                                         {selectedWorkspacesLocal.length}/
-                                        {workspaceNum}
+                                        {workspaceNum} {selectedWorkspacesLocal.length === workspaceNum && <span className="bg-red-600 w-max p-1 rounded-lg ">Max Workspaces Selected</span>}
                                     </p>
                                 )}
                                 <div className="flex gap-2">

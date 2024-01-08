@@ -16,22 +16,22 @@ interface RoomCardPropsI {
 
 const RoomCard = ({ room, building }: RoomCardPropsI) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { selectedDate } = useContext(ReserveContext);
+    const { selectedDate, filters } = useContext(ReserveContext);
 
     const getFilteredWorkspaces = () => {
         return (
             getData("workspaces", {
                 room: room.id,
             }) as WorkspaceI[]
-        ).filter((workspace) =>
+        ).filter((workspace) => selectedDate ?
             !(
                 getData("reservations", {
                     date: new Date(selectedDate),
                 }) as ReservationI[]
             ).some((reservation) =>
                 reservation.workspaces.includes(workspace.id)
-            )
-        );
+            ) : true
+        ).filter(workspace => workspace.desktops >= filters.workspaces);
     }
 
     if (getFilteredWorkspaces().length !== 0) return (
@@ -56,13 +56,7 @@ const RoomCard = ({ room, building }: RoomCardPropsI) => {
                     })}
                     <div className="flex items-baseline bg-neutral-700 rounded-md px-1 self-end">
                         <h6>
-                            {selectedDate === "YYYY-MM-DD"
-                                ? (
-                                    getData("workspaces", {
-                                        room: room.id,
-                                    }) as WorkspaceI[]
-                                ).length
-                                : getFilteredWorkspaces().length}
+                            {getFilteredWorkspaces().length}
                         </h6>
                         Workspaces
                     </div>

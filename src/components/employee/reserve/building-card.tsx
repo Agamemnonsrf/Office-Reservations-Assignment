@@ -1,7 +1,9 @@
 import { Disclosure, Transition } from "@headlessui/react";
-import { BuildingI, RoomI } from "../../../interfaces/db-intertface";
+import { BuildingI, ReservationI, RoomI, WorkspaceI } from "../../../interfaces/db-intertface";
 import RoomCard from "./room-card";
 import { getData } from "../../../mocks/utils";
+import { useContext } from "react";
+import { ReserveContext } from "./reserve-context";
 
 interface BuildingCardPropsI {
     name: string;
@@ -11,20 +13,47 @@ interface BuildingCardPropsI {
 }
 
 const BuildingCard = (props: BuildingCardPropsI) => {
+    const { filters, selectedDate } = useContext(ReserveContext);
+
     const getWorkspacesLength = () => {
         let workspaces = 0;
         let rooms = 0;
-        props.rooms.forEach((room) => {
+        getFilteredRooms().forEach((room) => {
+            const roomWorkspaces = (getData("workspaces", { room: room.id }) as WorkspaceI[]);
             if (
-                getData("workspaces", { room: room.id }).length >=
+                roomWorkspaces.length >=
                 props.workspaceNum
             ) {
-                workspaces += getData("workspaces", { room: room.id }).length;
-                rooms++;
+                const filteredWorkspaces = roomWorkspaces.filter((workspace) =>
+                    !(
+                        getData("reservations", {
+                            date: new Date(selectedDate),
+                        }) as ReservationI[]
+                    ).some((reservation) =>
+                        reservation.workspaces.includes(workspace.id)
+                    )
+                ).filter(workspace => workspace.desktops >= filters.workspaces)
+
+                if (filteredWorkspaces.length) {
+                    workspaces += filteredWorkspaces.length;
+                    rooms++;
+                }
             }
         });
         return { workspaces, rooms };
     };
+
+    const getFilteredRooms = () => {
+        return props.rooms.filter(room => props.workspaceNum ? getData("workspaces", {
+            room: room.id,
+        }).length >= props.workspaceNum : true).filter((room) =>
+            filters.room.length
+                ? filters.room.every((filter) =>
+                    room.features.includes(filter)
+                )
+                : true
+        ).filter(room => (getData("workspaces", { room: room.id }) as WorkspaceI[]).some(workspace => workspace.desktops >= filters.workspaces));
+    }
 
     if (getWorkspacesLength().workspaces !== 0) return (
         <div className="w-1/2 px-4 pt-4">
@@ -57,28 +86,14 @@ const BuildingCard = (props: BuildingCardPropsI) => {
                     >
                         <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm">
                             <div className="flex gap-2 overflow-auto">
-                                {props.rooms.map((room) => {
-                                    if (props.workspaceNum) {
-                                        if (
-                                            getData("workspaces", {
-                                                room: room.id,
-                                            }).length >= props.workspaceNum
-                                        )
-                                            return (
-                                                <RoomCard
-                                                    key={room.id}
-                                                    room={room}
-                                                    building={props.building}
-                                                />
-                                            );
-                                    } else
-                                        return (
-                                            <RoomCard
-                                                key={room.id}
-                                                room={room}
-                                                building={props.building}
-                                            />
-                                        );
+                                {getFilteredRooms().map((room) => {
+                                    return (
+                                        <RoomCard
+                                            key={room.id}
+                                            room={room}
+                                            building={props.building}
+                                        />
+                                    );
                                 })}
                             </div>
                         </Disclosure.Panel>

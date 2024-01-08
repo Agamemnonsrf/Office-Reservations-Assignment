@@ -28,9 +28,9 @@ const getRoomFeatures = () => {
 const Filters = () => {
     const [selectedBuildingFeatures, setSelectedBuildingFeatures] = useState<string[]>([]);
     const [selectedRoomFeatures, setSelectedRoomFeatures] = useState<string[]>([]);
-    const [workspaceNum, setWorkspaceNum] = useState<number>(0);
+    const [workspaceNum, setWorkspaceNum] = useState<number>(1);
 
-    const { filters, setFilters } = useContext(ReserveContext);
+    const { setFilters } = useContext(ReserveContext);
 
     const handleApplyFilters = () => {
         setFilters({
@@ -93,6 +93,7 @@ const Filters = () => {
                                             id="workspace-desktops"
                                             className="rounded-md p-2 w-20"
                                             min="1"
+                                            value={workspaceNum}
                                             onChange={(e) => {
                                                 setWorkspaceNum(Number(e.target.value));
                                             }}
@@ -101,9 +102,6 @@ const Filters = () => {
                                     <button onClick={handleApplyFilters}>
                                         Apply
                                     </button>
-                                    <span>
-                                        {JSON.stringify(filters)}
-                                    </span>
                                 </div>
                             </div>
                         </Disclosure.Panel>
