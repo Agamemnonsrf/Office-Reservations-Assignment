@@ -6,7 +6,6 @@ import {
     WorkspaceI,
 } from "../../../interfaces/db-intertface";
 import { ReserveContext } from "./reserve-context";
-import { getData } from "../../../mocks/utils";
 
 interface WorkspaceModalI {
     room: RoomI;
