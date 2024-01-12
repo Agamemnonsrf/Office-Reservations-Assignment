@@ -21,7 +21,9 @@ const DataPage = ({ show }: Props) => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+    //setIsDrawerOpen(!isDrawerOpen);
+
+
   };
 
     useEffect(() => {
