@@ -7,7 +7,7 @@ import React, { useState , FC } from 'react';
 
 type DrawerProps = {
     isOpen: boolean;
-    onClose: () => void;
+    onClose: (args:any) => void;
     children: React.ReactNode;
 };
 

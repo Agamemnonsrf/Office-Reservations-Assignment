@@ -6,15 +6,18 @@ import { getData } from "../../mocks/utils";
 type Props = {
     user: UserI | null;
     setUser: React.Dispatch<React.SetStateAction<UserI | null>>;
+    users: UserI[];
+    //setUsers: React.Dispatch<React.SetStateAction<UserI[]>>;
 };
 
-const LoginDropdown = ({ user, setUser }: Props) => {
-    const [users, setUsers] = useState<UserI[]>([]);
+const LoginDropdown = ({ user, setUser,users }: Props) => {
+    
 
-    useEffect(() => {
-        const mockUsers = getData("users");
-        setUsers(mockUsers as UserI[]);
-    }, []);
+    // useEffect(() => {
+    //     const mockUsers = getData("users");
+        
+        
+    // }, []);
 
     const rolesMap = (user: UserI) => {
         const map = user.roles.map((role: string) => {

@@ -18,6 +18,12 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
         props.onSave && props.onSave(edited_row);
     }
 
+    const onRowClick = (row:any) => {
+        return () => {
+            props.onRowClick && props.onRowClick(row);
+        }
+    }
+
     return (
         <div className="p-2 w-full  h-52">
             <div className="w-full align-middle block shadow overflow-y-auto border-b border-gray-200 rounded-lg bg-white" style={props.style ?? {height:500}}>
@@ -100,6 +106,15 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                         <tr>
                                             {props.columns.map((column) => {
                                                 if(column.editable === false){
+                                                    if(column.type === 'text_array'){
+                                                        console.log(row[column.field]);
+                                                        
+                                                    return (
+                                                        <td className="px-6 py-4 whitespace-nowrap text-black grow">
+                                                            {row[column.field].join(', ')}
+                                                        </td>
+                                                    );
+                                                    }
                                                     return (
                                                         <td className="px-6 py-4 whitespace-nowrap text-black grow">
                                                             {row[column.field]}
@@ -127,7 +142,7 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                 }
                                 else{
                                     return (
-                                        <tr>
+                                        <tr onClick={onRowClick(row)}>
                                             {props.columns.map((column) => {
                                                 return (
                                                     <td className="px-6 py-4 whitespace-nowrap text-black grow">

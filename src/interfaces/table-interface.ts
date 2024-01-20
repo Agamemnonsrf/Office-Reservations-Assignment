@@ -5,9 +5,10 @@ interface TableDataI {
     inlineEditing: boolean;
     onSave? : Function;
     onDelete? : Function;
+    onRowClick? : Function;
 }
 
-type ColumnType = "text" | "number" | "radio";
+type ColumnType = "text" | "number" | "radio" | "text_array";
 
 interface TableColumnI {
     field: string;
