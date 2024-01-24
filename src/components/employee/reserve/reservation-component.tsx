@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import BuildingCard from "./building-card";
 import Filters from "./filters";
 import {
     BuildingI,
     RoomI,
+    UserI,
     WorkspaceI,
 } from "../../../interfaces/db-intertface";
-import { getData } from "../../../mocks/utils";
+import { addReservation, getData } from "../../../mocks/utils";
 import { ReserveContext } from "./reserve-context";
 import ConfirmModal from "./confirm-modal";
+import UserContext from "../../../context/user/user-context";
 
 type RoomBuilding = {
     building: BuildingI;
@@ -28,6 +30,8 @@ const ReservationComponent = () => {
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
+    const { user } = useContext(UserContext);
+
     type Filters = {
         building: string[];
         room: string[];
@@ -46,6 +50,36 @@ const ReservationComponent = () => {
               )
             : true
     );
+
+    const handleConfirm = () => {
+        if (!user) return;
+        if (
+            !(getData("users", { id: user.id }) as UserI[])[0].roles.includes(
+                "employee"
+            )
+        ) {
+            alert(
+                "You are not authorized to make reservations, refresh the page"
+            );
+            return;
+        }
+        if (!roomBuilding) return;
+        const reservation = {
+            id: 0,
+            date: new Date(selectedDate),
+            workspaces: selectedWorkspaces.map((workspace) => workspace.id),
+            room: roomBuilding.room.id,
+            building: roomBuilding.building.id,
+            ...(user
+                ? {
+                      user: user.id,
+                  }
+                : { user: -1 }),
+        };
+
+        addReservation(reservation);
+        setShowConfirmModal(false);
+    };
 
     useEffect(() => {
         const mockBuildings = getData("buildings");
@@ -183,6 +217,15 @@ const ReservationComponent = () => {
                                                         setIsShow={
                                                             setShowConfirmModal
                                                         }
+                                                        handleConfirm={
+                                                            handleConfirm
+                                                        }
+                                                        handleCancel={() =>
+                                                            setShowConfirmModal(
+                                                                false
+                                                            )
+                                                        }
+                                                        title="Would you like to confirm your reservation?"
                                                     />
                                                 </div>
                                             </div>
