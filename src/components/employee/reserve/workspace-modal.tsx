@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import {
     BuildingI,
     RoomI,
@@ -15,14 +15,12 @@ interface WorkspaceModalI {
     getFilteredWorkspaces: () => WorkspaceI[];
 }
 
-
-
 const WorkspaceModal = ({
     room,
     building,
     isOpen,
     setIsOpen,
-    getFilteredWorkspaces
+    getFilteredWorkspaces,
 }: WorkspaceModalI) => {
     const [maxWorkspaces, setMaxWorkspaces] = useState(false);
     const [selectedWorkspacesLocal, setSelectedWorkspacesLocal] = useState<
@@ -47,13 +45,17 @@ const WorkspaceModal = ({
         setIsOpen(false);
     };
 
+    useEffect(() => {}, [selectedWorkspacesLocal]);
+
     const handleClickWorkspace = (workspace: WorkspaceI) => {
-        const isWorkspaceSelected = selectedWorkspacesLocal.includes(workspace);
+        const isWorkspaceSelected = selectedWorkspacesLocal
+            .map((workspace) => workspace.id)
+            .includes(workspace.id);
 
         if (hasSetWorkspaceNum) {
             if (isWorkspaceSelected) {
-                setSelectedWorkspacesLocal((prev: any) =>
-                    prev.filter((item: any) => item !== workspace)
+                setSelectedWorkspacesLocal((prev: WorkspaceI[]) =>
+                    prev.filter((item: WorkspaceI) => item.id !== workspace.id)
                 );
                 maxWorkspaces && setMaxWorkspaces(false);
             } else {
@@ -69,12 +71,12 @@ const WorkspaceModal = ({
         } else {
             let offset = 0;
             if (isWorkspaceSelected) {
-                setSelectedWorkspacesLocal((prev: any) =>
-                    prev.filter((item: any) => item !== workspace)
+                setSelectedWorkspacesLocal((prev: WorkspaceI[]) =>
+                    prev.filter((item: WorkspaceI) => item.id !== workspace.id)
                 );
                 offset--;
             } else {
-                setSelectedWorkspacesLocal((prev: any) => [...prev, workspace]);
+                setSelectedWorkspacesLocal((prev) => [...prev, workspace]);
                 offset++;
             }
             setWorkspaceNum(selectedWorkspacesLocal.length + offset);
@@ -121,7 +123,13 @@ const WorkspaceModal = ({
                                 {hasSetWorkspaceNum && (
                                     <p className="p-1 my-2">
                                         {selectedWorkspacesLocal.length}/
-                                        {workspaceNum} {selectedWorkspacesLocal.length === workspaceNum && <span className="bg-red-600 w-max p-1 rounded-lg ">Max Workspaces Selected</span>}
+                                        {workspaceNum}{" "}
+                                        {selectedWorkspacesLocal.length ===
+                                            workspaceNum && (
+                                            <span className="bg-red-600 w-max p-1 rounded-lg ">
+                                                Max Workspaces Selected
+                                            </span>
+                                        )}
                                     </p>
                                 )}
                                 <div className="flex gap-2">
@@ -136,49 +144,58 @@ const WorkspaceModal = ({
                                     </button>
                                 </div>
                                 <div className="mt-2 flex flex-wrap w-7/12">
-                                    {getFilteredWorkspaces().map((workspace) => {
-                                        const isSelected =
-                                            selectedWorkspacesLocal.includes(
-                                                workspace
-                                            );
-
-                                        return (
-                                            <button
-                                                key={workspace.id}
-                                                onClick={() =>
-                                                    handleClickWorkspace(
-                                                        workspace
+                                    {getFilteredWorkspaces().map(
+                                        (workspace) => {
+                                            const isSelected =
+                                                selectedWorkspacesLocal
+                                                    .map(
+                                                        (workspace) =>
+                                                            workspace.id
                                                     )
-                                                }
-                                                className={`${isSelected &&
-                                                    "border-blue-500"
+                                                    .includes(workspace.id);
+                                            return (
+                                                <button
+                                                    key={workspace.id}
+                                                    onClick={() =>
+                                                        handleClickWorkspace(
+                                                            workspace
+                                                        )
+                                                    }
+                                                    className={`${
+                                                        isSelected &&
+                                                        "border-blue-500"
                                                     } bg-neutral-900 pl-6 py-2 m-2 border-2 rounded-md flex flex-col justify-center w-fit focus:outline-none`}
-                                            >
-                                                <div className="flex justify-between items-baseline w-full">
-                                                    <p>
-                                                        Workspace {workspace.room}-{workspace.id}
-                                                    </p>
-                                                </div>
-                                                <div className="flex gap-2">
-                                                    <div className="flex items-baseline bg-neutral-700 rounded-md px-1 self-end">
-                                                        <h6>
-                                                            {workspace.desktops}
-                                                        </h6>
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            height="13"
-                                                            width="14"
-                                                            viewBox="0 0 576 512"
-                                                            fill="white"
-                                                            className="ml-2"
-                                                        >
-                                                            <path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64H240l-10.7 32H160c-17.7 0-32 14.3-32 32s14.3 32 32 32H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H346.7L336 416H512c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64zM512 64V352H64V64H512z" />
-                                                        </svg>
+                                                >
+                                                    <div className="flex justify-between items-baseline w-full">
+                                                        <p>
+                                                            Workspace{" "}
+                                                            {workspace.room}-
+                                                            {workspace.id}
+                                                        </p>
                                                     </div>
-                                                </div>
-                                            </button>
-                                        );
-                                    })}
+                                                    <div className="flex gap-2">
+                                                        <div className="flex items-baseline bg-neutral-700 rounded-md px-1 self-end">
+                                                            <h6>
+                                                                {
+                                                                    workspace.desktops
+                                                                }
+                                                            </h6>
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                height="13"
+                                                                width="14"
+                                                                viewBox="0 0 576 512"
+                                                                fill="white"
+                                                                className="ml-2"
+                                                            >
+                                                                <path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64H240l-10.7 32H160c-17.7 0-32 14.3-32 32s14.3 32 32 32H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H346.7L336 416H512c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64zM512 64V352H64V64H512z" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </button>
+                                            );
+                                        }
+                                    )}
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>

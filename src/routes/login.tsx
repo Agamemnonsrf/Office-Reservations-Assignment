@@ -13,8 +13,30 @@ const LoginScreen: React.FC = () => {
 
     const handleLogin = () => {
         if (!selectedUser) return;
+        if (!isUserValid()) {
+            alert("User has been modified, reload the page");
+            return;
+        }
         login(selectedUser.id);
         navigate("/");
+    };
+
+    const isUserValid = () => {
+        const mockUsers = getData("users") as UserI[];
+        const user = mockUsers.find((user) => user.id === selectedUser?.id);
+        if (!user || !selectedUser) return false;
+        //check if user is exactly the same as selectedUser
+        if (user.name !== selectedUser.name) return false;
+
+        //check if roles are the same
+        if (user.roles.length !== selectedUser.roles.length) return false;
+        if (
+            !user.roles.every(
+                (role, index) => role === selectedUser.roles[index]
+            )
+        )
+            return false;
+        return true;
     };
 
     const resetDb = () => {
@@ -23,7 +45,7 @@ const LoginScreen: React.FC = () => {
         localStorage.setItem("is_intialized", "true");
         const mockUsers = getData("users");
         setUsers(mockUsers as UserI[]);
-    }
+    };
 
     useEffect(() => {
         //check local storage for user
@@ -42,10 +64,11 @@ const LoginScreen: React.FC = () => {
                 Welcome, please login first
             </h1>
             <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center gap-5">
-                <LoginDropdown user={selectedUser} setUser={setSelectedUser} users={users} />
-                <div className="flex">
-
-                </div>
+                <LoginDropdown
+                    user={selectedUser}
+                    setUser={setSelectedUser}
+                    users={users}
+                />
                 <button disabled={!selectedUser} onClick={handleLogin}>
                     Login
                 </button>
