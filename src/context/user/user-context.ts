@@ -1,4 +1,4 @@
-import React from "react";
+import { createContext } from "react";
 
 import { UserI } from "../../interfaces/db-intertface";
 
@@ -9,8 +9,6 @@ interface UserContextValue {
     logout: () => void;
 }
 
-const UserContext = React.createContext<UserContextValue>(
-    {} as UserContextValue
-);
+const UserContext = createContext<UserContextValue>({} as UserContextValue);
 
 export default UserContext;

@@ -1,14 +1,15 @@
 import LoginDropdown from "../components/employee/login-dropdown.tsx";
 import React, { useState, useContext, useEffect } from "react";
 import { UserI } from "../interfaces/db-intertface";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import UserContext from "../context/user/user-context.ts";
 import { getData, loadAllMockData } from "../mocks/utils.ts";
 
 const LoginScreen: React.FC = () => {
     const [selectedUser, setSelectedUser] = useState<UserI | null>(null);
     const [users, setUsers] = useState<UserI[]>([]);
-    const navigate = useNavigate();
+    const [loginComplete, setLoginComplete] = useState<boolean>(false);
+
     const { login } = useContext(UserContext);
 
     const handleLogin = () => {
@@ -18,7 +19,7 @@ const LoginScreen: React.FC = () => {
             return;
         }
         login(selectedUser.id);
-        navigate("/");
+        setLoginComplete(true);
     };
 
     const isUserValid = () => {
@@ -57,6 +58,8 @@ const LoginScreen: React.FC = () => {
         const mockUsers = getData("users");
         setUsers(mockUsers as UserI[]);
     }, []);
+
+    if (loginComplete) return <Navigate to="/" />;
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-neutral-950">

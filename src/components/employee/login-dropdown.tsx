@@ -1,24 +1,14 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { UserI } from "../../interfaces/db-intertface";
-import { getData } from "../../mocks/utils";
 
 type Props = {
     user: UserI | null;
     setUser: React.Dispatch<React.SetStateAction<UserI | null>>;
     users: UserI[];
-    //setUsers: React.Dispatch<React.SetStateAction<UserI[]>>;
 };
 
-const LoginDropdown = ({ user, setUser,users }: Props) => {
-    
-
-    // useEffect(() => {
-    //     const mockUsers = getData("users");
-        
-        
-    // }, []);
-
+const LoginDropdown = ({ user, setUser, users }: Props) => {
     const rolesMap = (user: UserI) => {
         const map = user.roles.map((role: string) => {
             return (
@@ -41,7 +31,10 @@ const LoginDropdown = ({ user, setUser,users }: Props) => {
     return (
         <Listbox value={user} onChange={setUser}>
             <div className="relative mt-1 w-fit">
-                <Listbox.Button className="relative flex justify-between cursor-pointer items-center w-80 rounded-lg border-neutral-600 bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                <Listbox.Button
+                    data-testid="login-dropdown"
+                    className="relative flex justify-between cursor-pointer items-center w-80 rounded-lg border-neutral-600 bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+                >
                     <span className="block text-black px-5">
                         {user
                             ? user.name

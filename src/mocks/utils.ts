@@ -5,9 +5,7 @@ import {
     rooms as mock_rooms,
     workspaces as mock_workspaces,
     reservations as mock_reservations,
-} from "./data.js";
-//import interfaces
-import { v4 as uuidv4 } from "uuid";
+} from "./data";
 import {
     BuildingI,
     RoomI,
