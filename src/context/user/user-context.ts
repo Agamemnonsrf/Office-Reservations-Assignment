@@ -1,5 +1,4 @@
 import { createContext } from "react";
-
 import { UserI } from "../../interfaces/db-intertface";
 
 interface UserContextValue {
@@ -9,6 +8,15 @@ interface UserContextValue {
     logout: () => void;
 }
 
-const UserContext = createContext<UserContextValue>({} as UserContextValue);
+const UserContext = createContext<UserContextValue>({
+    isLoggedIn: false,
+    user: null,
+    login: () => {
+        throw new Error("login function not implemented");
+    },
+    logout: () => {
+        throw new Error("logout function not implemented");
+    },
+});
 
 export default UserContext;

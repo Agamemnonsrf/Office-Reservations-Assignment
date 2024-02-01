@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./index.css";
 import Root from "./routes/root";
 import AdministratorDashboard from "./routes/administrator";
@@ -10,57 +10,59 @@ import UserProvider from "./context/user/user-provider";
 import DataPage from "./routes/data-page";
 import MyReservations from "./routes/my-reservations";
 
-const routerReworked = createBrowserRouter([
-    {
-        path: "/",
-        element: <Root />,
-        children: [
-            {
-                path: "dashboard",
-                element: <AdministratorDashboard />,
-                children: [
-                    {
-                        path: "users",
-                        element: <DataPage show={"users"} />,
-                    },
-                    {
-                        path: "reservations",
-                        element: <DataPage show={"reservations"} />,
-                    },
-                    {
-                        path: "buildings",
-                        element: <DataPage show={"buildings"} />,
-                    },
-                    {
-                        path: "rooms",
-                        element: <DataPage show={"rooms"} />,
-                    },
-                    {
-                        path: "workspaces",
-                        element: <DataPage show={"workspaces"} />,
-                    },
-                ],
-            },
-            {
-                path: "reserve",
-                element: <ReservationComponent />,
-            },
-            {
-                path: "my-reservations",
-                element: <MyReservations />,
-            },
-        ],
-    },
-    {
-        path: "/login",
-        element: <LoginScreen />,
-    },
-]);
+const RootElement = () => {
+    return (
+        <React.StrictMode>
+            <UserProvider>
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Root />}>
+                            <Route
+                                path="dashboard"
+                                element={<AdministratorDashboard />}
+                            >
+                                <Route
+                                    path="users"
+                                    element={<DataPage show={"users"} />}
+                                />
+                                <Route
+                                    path="reservations"
+                                    element={<DataPage show={"reservations"} />}
+                                />
+                                <Route
+                                    path="buildings"
+                                    element={<DataPage show={"buildings"} />}
+                                />
+                                <Route
+                                    path="rooms"
+                                    element={<DataPage show={"rooms"} />}
+                                />
+                                <Route
+                                    path="workspaces"
+                                    element={<DataPage show={"workspaces"} />}
+                                />
+                            </Route>
+                            <Route
+                                path="reserve"
+                                element={<ReservationComponent />}
+                            />
+                            <Route
+                                path="my-reservations"
+                                element={<MyReservations />}
+                            />
+                        </Route>
+                        <Route path="/login" element={<LoginScreen />} />
+                    </Routes>
+                </Router>
+            </UserProvider>
+        </React.StrictMode>
+    );
+};
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-        <UserProvider>
-            <RouterProvider router={routerReworked} />
-        </UserProvider>
-    </React.StrictMode>
-);
+window.addEventListener("DOMContentLoaded", function () {
+    ReactDOM.createRoot(document.getElementById("root")!).render(
+        <RootElement />
+    );
+});
+
+export default RootElement;

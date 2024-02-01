@@ -17,8 +17,12 @@ type RoomBuilding = {
     room: RoomI;
 };
 
-const ReservationComponent = () => {
-    const [buildings, setBuildings] = useState<BuildingI[]>([]);
+type props = {
+    testBuildings?: BuildingI[];
+};
+
+const ReservationComponent = ({ testBuildings = [] }: props) => {
+    const [buildings, setBuildings] = useState<BuildingI[]>(testBuildings);
     const [workspaceNum, setWorkspaceNum] = useState<number>(0);
     const [hasSetWorkspaceNum, setHasSetWorkspaceNum] = useState(false);
     const [selectedWorkspaces, setSelectedWorkspaces] = useState<WorkspaceI[]>(
@@ -31,6 +35,13 @@ const ReservationComponent = () => {
     const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
 
     const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        if (!testBuildings.length) {
+            const mockBuildings = getData("buildings");
+            setBuildings(mockBuildings as BuildingI[]);
+        }
+    }, []);
 
     type Filters = {
         building: string[];
@@ -50,6 +61,8 @@ const ReservationComponent = () => {
               )
             : true
     );
+
+    buildings;
 
     const handleConfirm = () => {
         if (!user) return;
@@ -81,11 +94,6 @@ const ReservationComponent = () => {
         setShowConfirmModal(false);
     };
 
-    useEffect(() => {
-        const mockBuildings = getData("buildings");
-        setBuildings(mockBuildings as BuildingI[]);
-    }, []);
-
     return (
         <ReserveContext.Provider
             value={{
@@ -103,13 +111,14 @@ const ReservationComponent = () => {
                 <div className="w-full min-h-screen  bg-neutral-900 rounded-lg p-5 relative">
                     <h2>Make a Reservation</h2>
                     <Filters />
-                    <div className="">
+                    <div>
                         <div className="flex justify-around m-5">
                             <div className="flex flex-col">
                                 <label htmlFor="date">Date</label>
                                 <input
                                     type="date"
                                     id="date"
+                                    data-testid="date"
                                     className="rounded-md p-2"
                                     value={selectedDate}
                                     onChange={(e) =>
@@ -243,13 +252,30 @@ const ReservationComponent = () => {
                                                     key={building.id}
                                                     name={building.name}
                                                     rooms={
-                                                        getData("rooms", {
-                                                            building:
-                                                                building.id,
-                                                        }) as RoomI[]
+                                                        testBuildings.length
+                                                            ? [
+                                                                  {
+                                                                      id: 1,
+                                                                      building: 1,
+                                                                      features:
+                                                                          [
+                                                                              "test feature",
+                                                                          ],
+                                                                  },
+                                                              ]
+                                                            : (getData(
+                                                                  "rooms",
+                                                                  {
+                                                                      building:
+                                                                          building.id,
+                                                                  }
+                                                              ) as RoomI[])
                                                     }
                                                     building={building}
                                                     workspaceNum={workspaceNum}
+                                                    testBuildings={
+                                                        testBuildings
+                                                    }
                                                 />
                                             );
                                         })

@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { getData, addUser, updateUser } from "../mocks/utils";
 import DataTable from "../components/data-table/data-table";
-import { TableColumnI } from "../interfaces/table-interface";
-import Sidenav from "../components/sidenav/sidenav";
 import UserSidenav from "../components/sidenav/user-sidenav";
+import { TableColumnI } from "../interfaces/table-interface";
+import { addUser, getData, updateUser } from "../mocks/utils";
 
 type showType = "users" | "reservations" | "buildings" | "rooms" | "workspaces";
 
@@ -13,8 +12,6 @@ type Props = {
 
 const DataPage = ({ show }: Props) => {
     const [data, setData] = useState<any[]>([]);
-
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     const sidenavRef = useRef<any>(null);
 
@@ -27,7 +24,6 @@ const DataPage = ({ show }: Props) => {
     };
 
     const handleDrawerClose = (args: any) => {
-        console.log(args);
         if (args.action === "submit") {
             if (args.user.id == 0) {
                 addUser(args.user);
@@ -43,7 +39,7 @@ const DataPage = ({ show }: Props) => {
 
     useEffect(() => {
         const mockData = getData(show);
-        console.log(mockData);
+
         setData(mockData);
     }, []);
 
@@ -74,7 +70,7 @@ const DataPage = ({ show }: Props) => {
             <UserSidenav onClose={handleDrawerClose} ref={sidenavRef} />
 
             {/* Main content */}
-            <div className={`main-content ${isDrawerOpen ? "blur-sm" : ""}`}>
+            <div className={`main-content `}>
                 <DataTable
                     style={{ height: "500px" }}
                     columns={columns}

@@ -1,10 +1,9 @@
-import "../App.css";
 import { useEffect, useContext } from "react";
 import UserContext from "../context/user/user-context";
 import { UserI } from "../interfaces/db-intertface";
 import { Outlet } from "react-router-dom";
 
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getData } from "../mocks/utils";
 
 const Root = () => {

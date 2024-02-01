@@ -45,7 +45,6 @@ type data = BuildingI | RoomI | WorkspaceI | UserI | ReservationI;
 
 const filterData = (data: data[], filter: filter): data[] => {
     const filterProperty = Object.keys(filter)[0];
-
     if (data[0].hasOwnProperty(filterProperty)) {
         const dataFiltered = data.filter((item) => {
             if (filterProperty === "date") {
@@ -214,9 +213,11 @@ function deleteRoom(room: RoomI) {
 
 function getWorkspaces(): WorkspaceI[] {
     const workspaces = localStorage.getItem("workspaces");
+
     if (workspaces === null) {
         return [];
     }
+
     return JSON.parse(workspaces);
 }
 

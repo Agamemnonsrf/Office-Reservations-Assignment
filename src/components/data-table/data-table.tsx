@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TableDataI } from "../../interfaces/table-interface";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
     const [edited_row_index, setEditedRowIndex] = useState(-1);
@@ -8,11 +8,11 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
 
     const {
         register,
-        handleSubmit,
+
         formState: { errors },
     } = useForm();
-    const onSubmit = (data: any) => console.log(data);
-    console.log(errors);
+
+    errors;
 
     const removePx = (value: string): number => {
         return Number(value.replace("px", ""));
@@ -170,12 +170,10 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                                                     column.type ===
                                                                     "text_array"
                                                                 ) {
-                                                                    console.log(
-                                                                        row[
-                                                                            column
-                                                                                .field
-                                                                        ]
-                                                                    );
+                                                                    row[
+                                                                        column
+                                                                            .field
+                                                                    ];
 
                                                                     return (
                                                                         <td className="px-6 py-4 whitespace-nowrap text-black grow">

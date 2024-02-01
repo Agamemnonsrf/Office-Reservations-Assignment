@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { UserI } from "../../interfaces/db-intertface";
 import { roles } from "../../interfaces/db-intertface";
-import useUser from "../../hooks/useUser";
 import { getData } from "../../mocks/utils";
 import UserContext from "../../context/user/user-context";
 
