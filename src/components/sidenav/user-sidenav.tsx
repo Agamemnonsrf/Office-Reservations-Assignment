@@ -159,13 +159,18 @@ const UserSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                             </label>
                         </div>
                     </div>
-                    <div className="flex p-5">
-                        <button onClick={onCancelPress} className="p-4">
-                            Cancel
-                        </button>
+                    <div className="flex">
+                        
                         <button type="submit">Submit</button>
                     </div>
                 </form>
+                <div className="flex p-5">
+                        
+                <button onClick={onCancelPress} className="p-4">
+                            Cancel
+                        </button>
+                    </div>
+               
             </div>
         );
     }

@@ -4,13 +4,10 @@ import UserSidenav from "../components/sidenav/user-sidenav";
 import { TableColumnI } from "../interfaces/table-interface";
 import { addUser, getData, updateUser } from "../mocks/utils";
 
-type showType = "users" | "reservations" | "buildings" | "rooms" | "workspaces";
 
-type Props = {
-    show: showType;
-};
 
-const DataPage = ({ show }: Props) => {
+
+const DataPageBuildings = () => {
     const [data, setData] = useState<any[]>([]);
 
     const sidenavRef = useRef<any>(null);
@@ -24,21 +21,22 @@ const DataPage = ({ show }: Props) => {
     };
 
     const handleDrawerClose = (args: any) => {
+        
         if (args.action === "submit") {
             if (args.user.id == 0) {
                 addUser(args.user);
-                const mockData = getData(show);
+                const mockData = getData('buildings');
                 setData(mockData);
             } else {
                 updateUser(args.user);
-                const mockData = getData(show);
+                const mockData = getData('buildings');
                 setData(mockData);
             }
         }
     };
 
     useEffect(() => {
-        const mockData = getData(show);
+        const mockData = getData('buildings');
 
         setData(mockData);
     }, []);
@@ -56,8 +54,8 @@ const DataPage = ({ show }: Props) => {
             type: "text",
         },
         {
-            field: "roles",
-            title: "ROLES",
+            field: "features",
+            title: "FEATURES",
             type: "text_array",
         },
     ];
@@ -72,7 +70,7 @@ const DataPage = ({ show }: Props) => {
             {/* Main content */}
             <div className={`main-content `}>
                 <DataTable
-                    style={{ height: "500px" }}
+                    style={{ height: "auto" }}
                     columns={columns}
                     rows={data}
                     inlineEditing={false}
@@ -94,4 +92,4 @@ const DataPage = ({ show }: Props) => {
     );
 };
 
-export default DataPage;
+export default DataPageBuildings;

@@ -32,7 +32,7 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
         <div className="p-2 w-full  h-52">
             <div
                 className="w-full align-middle block shadow overflow-y-auto border-b border-gray-200 rounded-lg bg-white"
-                style={props.style ?? { height: 500 }}
+                style={props.style ?? { height: "auto" }}
             >
                 <div>
                     <table className="divide-y divide-gray-200 w-full table-auto">

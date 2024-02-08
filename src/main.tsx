@@ -7,8 +7,9 @@ import AdministratorDashboard from "./routes/administrator";
 import LoginScreen from "./routes/login";
 import ReservationComponent from "./components/employee/reserve/reservation-component";
 import UserProvider from "./context/user/user-provider";
-import DataPage from "./routes/data-page";
 import MyReservations from "./routes/my-reservations";
+import DataPageUsers from "./routes/data-page-users";
+import DataPageBuildings from "./routes/data-page-buildings";
 
 const RootElement = () => {
     return (
@@ -23,24 +24,24 @@ const RootElement = () => {
                             >
                                 <Route
                                     path="users"
-                                    element={<DataPage show={"users"} />}
+                                    element={<DataPageUsers show={"users"} />}
                                 />
-                                <Route
+                                {/* <Route
                                     path="reservations"
                                     element={<DataPage show={"reservations"} />}
-                                />
+                                /> */}
                                 <Route
                                     path="buildings"
-                                    element={<DataPage show={"buildings"} />}
+                                    element={<DataPageBuildings/>}
                                 />
-                                <Route
+                                {/* <Route
                                     path="rooms"
                                     element={<DataPage show={"rooms"} />}
                                 />
                                 <Route
                                     path="workspaces"
-                                    element={<DataPage show={"workspaces"} />}
-                                />
+                                    element={<DataPage show={"workspaces"} />} */}
+                                {/* /> */}
                             </Route>
                             <Route
                                 path="reserve"
