@@ -120,7 +120,7 @@ const Reservation = ({
                                                 getData("workspaces", {
                                                     id: workspace,
                                                 }) as WorkspaceI[]
-                                            )[0].desktops
+                                            )[0]?.desktops
                                         }
                                     </h6>
                                     <svg

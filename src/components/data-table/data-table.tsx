@@ -28,9 +28,6 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
         };
     };
 
-    const onDelete = (row:any)=>{
-        props.onDelete && props.onDelete(row)
-    }
 
     return (
         <div className="p-2 w-full  h-52">
@@ -45,6 +42,7 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                 {props.columns.map((column) => {
                                     return (
                                         <th
+                                            key={column.title + column.field}
                                             scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky top-0"
                                         >
@@ -84,7 +82,7 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                     {props.columns.map((column) => {
                                         if (column.editable === false) {
                                             return (
-                                                <td className="px-6 py-4 whitespace-nowrap text-black grow">
+                                                <td key={column.field} className="px-6 py-4 whitespace-nowrap text-black grow">
                                                     {column.defaultValue}
                                                 </td>
                                             );
@@ -139,18 +137,16 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                             (props.inlineEditing ? 1 : 0)
                                         }
                                         style={{
-                                            height: `calc(${
-                                                props.style
-                                                    ? removePx(
-                                                          (
-                                                              props.style
-                                                                  .height ?? 0
-                                                          ).toString()
-                                                      )
-                                                    : 500
-                                            }px - ${
-                                                57 + (add_new_open ? 78 : 0)
-                                            }px)`,
+                                            height: `calc(${props.style
+                                                ? removePx(
+                                                    (
+                                                        props.style
+                                                            .height ?? 0
+                                                    ).toString()
+                                                )
+                                                : 500
+                                                }px - ${57 + (add_new_open ? 78 : 0)
+                                                }px)`,
                                         }}
                                     >
                                         No data to display
@@ -194,8 +190,8 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                                                     <td className="px-6 py-4 whitespace-nowrap text-black grow">
                                                                         {
                                                                             row[
-                                                                                column
-                                                                                    .field
+                                                                            column
+                                                                                .field
                                                                             ]
                                                                         }
                                                                     </td>
@@ -210,8 +206,8 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                                                         }
                                                                         defaultValue={
                                                                             row[
-                                                                                column
-                                                                                    .field
+                                                                            column
+                                                                                .field
                                                                             ]
                                                                         }
                                                                         {...register(
@@ -259,11 +255,11 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                                     {props.columns.map(
                                                         (column) => {
                                                             return (
-                                                                <td className="px-6 py-4 whitespace-nowrap text-black grow">
+                                                                <td key={column.title} className="px-6 py-4 whitespace-nowrap text-black grow">
                                                                     {
                                                                         row[
-                                                                            column
-                                                                                .field
+                                                                        column
+                                                                            .field
                                                                         ]
                                                                     }
                                                                 </td>
@@ -284,7 +280,7 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                                             >
                                                                 Edit
                                                             </button>
-                                                           
+
                                                         </td>
                                                     )}
                                                     {/* <td>

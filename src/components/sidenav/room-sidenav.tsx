@@ -190,9 +190,9 @@ const RoomSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                     <div className="flex flex-wrap mt-2">
                         {room.features.map((feature: string, index: number) => (
                             <div key={index} className="flex items-center bg-gray-200 rounded-md p-2 mr-2 mb-2">
-                                <span>{feature}</span>
-                                <button onClick={() => handleDeleteChip(index)} className="ml-2">
-                                    <span className="h-4 w-4 bg-red">X</span>
+                                <span className="text-black">{feature}</span>
+                                <button onClick={() => handleDeleteChip(index)} className="ml-2 h-1 w-1 flex justify-center items-center">
+                                    <span className="bg-red">&times;</span>
                                 </button>
                             </div>
                         ))}
@@ -211,10 +211,10 @@ const RoomSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                 </div>
                 <div className="flex p-5">
 
-<button onClick={onDeletePress} className="p-4 text-red-500">
-    Delete
-</button>
-</div>
+                    <button onClick={onDeletePress} className="p-4 text-red-500">
+                        Delete
+                    </button>
+                </div>
 
             </div>
         );

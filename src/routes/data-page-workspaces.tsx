@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import DataTable from "../components/data-table/data-table";
 import { TableColumnI } from "../interfaces/table-interface";
-import { addRoom, addWorkspace, deleteWorkspace, getData, updateRoom, updateWorkspace } from "../mocks/utils";
-import RoomSidenav from "../components/sidenav/room-sidenav";
-import { workspaces } from "../mocks/data";
+import { addWorkspace, deleteWorkspace, getData, updateWorkspace } from "../mocks/utils";
 import WorkspaceSidenav from "../components/sidenav/workspace-sidenav";
+import { ReservationI } from "../interfaces/db-intertface";
 
 
 
@@ -23,23 +22,26 @@ const DataPageWorkspaces = () => {
     };
 
     const handleDrawerClose = (args: any) => {
-        
+
         if (args.action === "submit") {
             if (args.workspace.id == 0) {
                 addWorkspace(args.workspace);
                 const mockData = getData('workspaces');
                 setData(mockData);
-            
+
             }
-           
+
             else {
                 updateWorkspace(args.workspace);
                 const mockData = getData('workspaces');
                 setData(mockData);
             }
         }
-        else if(args.action == "delete"){
-            
+        else if (args.action == "delete") {
+            if ((getData("reservations") as ReservationI[]).some((reservation) => reservation.workspaces.includes(args.workspace.id))) {
+                alert("You can't delete a workspace that has reservations");
+                return;
+            }
             deleteWorkspace(args.workspace);
             const mockData = getData('workspaces');
             setData(mockData);
@@ -60,9 +62,9 @@ const DataPageWorkspaces = () => {
             editable: false,
         },
         {
-            field:"desktops",
-            title:"Desktops",
-            type:"number",
+            field: "desktops",
+            title: "Desktops",
+            type: "number",
         },
         {
             field: "room",

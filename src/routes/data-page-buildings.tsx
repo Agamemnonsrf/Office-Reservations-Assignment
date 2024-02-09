@@ -3,6 +3,7 @@ import DataTable from "../components/data-table/data-table";
 import { TableColumnI } from "../interfaces/table-interface";
 import { addBuilding, deleteBuilding, getData, updateBuilding } from "../mocks/utils";
 import BuildingSidenav from "../components/sidenav/building-sidenav";
+import { ReservationI } from "../interfaces/db-intertface";
 
 
 
@@ -21,7 +22,7 @@ const DataPageBuildings = () => {
     };
 
     const handleDrawerClose = (args: any) => {
-        
+
         if (args.action === "submit") {
             if (args.building.id == 0) {
                 addBuilding(args.building);
@@ -33,8 +34,11 @@ const DataPageBuildings = () => {
                 setData(mockData);
             }
         }
-        else if(args.action == "delete"){
-            
+        else if (args.action == "delete") {
+            if ((getData("reservations") as ReservationI[]).some(reservation => reservation.building === args.building.id)) {
+                alert("You can't delete a building that has reservations");
+                return;
+            }
             deleteBuilding(args.building);
             const mockData = getData('buildings');
             setData(mockData);

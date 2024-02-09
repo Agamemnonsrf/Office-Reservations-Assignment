@@ -116,6 +116,13 @@ function addUser(user: Partial<UserI>) {
 
 function deleteUser(user: UserI) {
     let users = getUsers();
+    //delete reservations made by user
+    const reservations = getReservations();
+    const reservations_filtered = reservations.filter(
+        (reservation) => reservation.user !== user.id
+    );
+    localStorage.setItem("reservations", JSON.stringify(reservations_filtered));
+    //delete user
     users = users.filter((temp_user) => temp_user.id !== user.id);
     localStorage.setItem("users", JSON.stringify(users));
 }

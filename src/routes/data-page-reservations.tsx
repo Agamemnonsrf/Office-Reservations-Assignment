@@ -1,10 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DataTable from "../components/data-table/data-table";
 import { TableColumnI } from "../interfaces/table-interface";
-import { addRoom, addWorkspace, getData, updateRoom, updateWorkspace } from "../mocks/utils";
-import RoomSidenav from "../components/sidenav/room-sidenav";
-import { workspaces } from "../mocks/data";
-import WorkspaceSidenav from "../components/sidenav/workspace-sidenav";
+import { getData } from "../mocks/utils";
 
 
 
@@ -12,7 +9,6 @@ import WorkspaceSidenav from "../components/sidenav/workspace-sidenav";
 const DataPageReservations = () => {
     const [data, setData] = useState<any[]>([]);
 
-    const sidenavRef = useRef<any>(null);
 
 
     useEffect(() => {
@@ -35,9 +31,9 @@ const DataPageReservations = () => {
             editable: false,
         },
         {
-            field:"user",
-            title:"User",
-            type:"number",
+            field: "user",
+            title: "User",
+            type: "number",
         },
         {
             field: "workspaces",
@@ -76,7 +72,7 @@ const DataPageReservations = () => {
                     rows={data.map((row) => ({
                         ...row,
                         workspaces: row.workspaces.join(", "),
-                        date : row.date.toDateString()
+                        date: row.date.toDateString()
                     }))}
                     inlineEditing={false}
                     onSave={(edited_row: any) => {
@@ -85,12 +81,7 @@ const DataPageReservations = () => {
                     onDelete={(deleted_row: any) => {
                         console.log(deleted_row);
                     }}
-                    onRowClick={(row: any) => {
-                        // (sidenavRef.current as any)?.openDrawer({
-                        //     isNew: false,
-                        //     workspace: row,
-                        // });
-                    }}
+
                 />
             </div>
         </div>

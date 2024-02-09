@@ -3,6 +3,7 @@ import DataTable from "../components/data-table/data-table";
 import { TableColumnI } from "../interfaces/table-interface";
 import { addRoom, deleteRoom, getData, updateRoom } from "../mocks/utils";
 import RoomSidenav from "../components/sidenav/room-sidenav";
+import { ReservationI } from "../interfaces/db-intertface";
 
 
 
@@ -21,7 +22,7 @@ const DataPageRooms = () => {
     };
 
     const handleDrawerClose = (args: any) => {
-        
+
         if (args.action === "submit") {
             if (args.room.id == 0) {
                 addRoom(args.room);
@@ -32,8 +33,11 @@ const DataPageRooms = () => {
                 const mockData = getData('rooms');
                 setData(mockData);
             }
-        } else if(args.action == "delete"){
-            
+        } else if (args.action == "delete") {
+            if ((getData("reservations") as ReservationI[]).some((reservation) => reservation.room === args.room.id)) {
+                alert("You can't delete a room that has reservations");
+                return;
+            }
             deleteRoom(args.room);
             const mockData = getData('rooms');
             setData(mockData);

@@ -150,7 +150,7 @@ const WorkspaceSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                     </div>
 
 
-                    <div className="flex">
+                    <div className="flex my-5">
                         <label htmlFor="desktops">Desktops:</label>
                         <input
                             type="number"

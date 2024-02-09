@@ -57,8 +57,8 @@ const ReservationComponent = ({ testBuildings = [] }: props) => {
     const filteredBuildings = buildings.filter((building) =>
         filters.building.length
             ? filters.building.every((filter) =>
-                  building.features.includes(filter)
-              )
+                building.features.includes(filter)
+            )
             : true
     );
 
@@ -85,8 +85,8 @@ const ReservationComponent = ({ testBuildings = [] }: props) => {
             building: roomBuilding.building.id,
             ...(user
                 ? {
-                      user: user.id,
-                  }
+                    user: user.id,
+                }
                 : { user: -1 }),
         };
 
@@ -107,7 +107,7 @@ const ReservationComponent = ({ testBuildings = [] }: props) => {
                 setFilters,
             }}
         >
-            <div className="w-full h-full flex flex-col justify-start items-center">
+            <div className="w-full h-screen flex flex-col justify-start items-center">
                 <div className="w-full min-h-screen  bg-neutral-900 rounded-lg p-5 relative">
                     <h2>Make a Reservation</h2>
                     <Filters />
@@ -254,22 +254,22 @@ const ReservationComponent = ({ testBuildings = [] }: props) => {
                                                     rooms={
                                                         testBuildings.length
                                                             ? [
-                                                                  {
-                                                                      id: 1,
-                                                                      building: 1,
-                                                                      features:
-                                                                          [
-                                                                              "test feature",
-                                                                          ],
-                                                                  },
-                                                              ]
+                                                                {
+                                                                    id: 1,
+                                                                    building: 1,
+                                                                    features:
+                                                                        [
+                                                                            "test feature",
+                                                                        ],
+                                                                },
+                                                            ]
                                                             : (getData(
-                                                                  "rooms",
-                                                                  {
-                                                                      building:
-                                                                          building.id,
-                                                                  }
-                                                              ) as RoomI[])
+                                                                "rooms",
+                                                                {
+                                                                    building:
+                                                                        building.id,
+                                                                }
+                                                            ) as RoomI[])
                                                     }
                                                     building={building}
                                                     workspaceNum={workspaceNum}
