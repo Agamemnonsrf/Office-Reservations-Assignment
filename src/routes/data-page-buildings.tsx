@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import DataTable from "../components/data-table/data-table";
-import UserSidenav from "../components/sidenav/user-sidenav";
 import { TableColumnI } from "../interfaces/table-interface";
 import { addUser, getData, updateUser } from "../mocks/utils";
+import BuildingSidenav from "../components/sidenav/building-sidenav";
 
 
 
@@ -16,7 +16,7 @@ const DataPageBuildings = () => {
         //setIsDrawerOpen(!isDrawerOpen);
         (sidenavRef.current as any)?.openDrawer({
             isNew: true,
-            user: undefined,
+            building: undefined,
         });
     };
 
@@ -65,7 +65,7 @@ const DataPageBuildings = () => {
             <button onClick={toggleDrawer} className="p-4">
                 new user
             </button>
-            <UserSidenav onClose={handleDrawerClose} ref={sidenavRef} />
+            <BuildingSidenav onClose={handleDrawerClose} ref={sidenavRef} />
 
             {/* Main content */}
             <div className={`main-content `}>
@@ -83,7 +83,7 @@ const DataPageBuildings = () => {
                     onRowClick={(row: any) => {
                         (sidenavRef.current as any)?.openDrawer({
                             isNew: false,
-                            user: row,
+                            building: row,
                         });
                     }}
                 />
