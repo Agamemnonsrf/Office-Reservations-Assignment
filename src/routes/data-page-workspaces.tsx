@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import DataTable from "../components/data-table/data-table";
 import { TableColumnI } from "../interfaces/table-interface";
-import { addBuilding, deleteBuilding, getData, updateBuilding } from "../mocks/utils";
-import BuildingSidenav from "../components/sidenav/building-sidenav";
+import { addRoom, addWorkspace, deleteWorkspace, getData, updateRoom, updateWorkspace } from "../mocks/utils";
+import RoomSidenav from "../components/sidenav/room-sidenav";
+import { workspaces } from "../mocks/data";
+import WorkspaceSidenav from "../components/sidenav/workspace-sidenav";
 
 
 
 
-const DataPageBuildings = () => {
+const DataPageWorkspaces = () => {
     const [data, setData] = useState<any[]>([]);
 
     const sidenavRef = useRef<any>(null);
@@ -16,33 +18,36 @@ const DataPageBuildings = () => {
         //setIsDrawerOpen(!isDrawerOpen);
         (sidenavRef.current as any)?.openDrawer({
             isNew: true,
-            building: undefined,
+            workspace: undefined,
         });
     };
 
     const handleDrawerClose = (args: any) => {
         
         if (args.action === "submit") {
-            if (args.building.id == 0) {
-                addBuilding(args.building);
-                const mockData = getData('buildings');
+            if (args.workspace.id == 0) {
+                addWorkspace(args.workspace);
+                const mockData = getData('workspaces');
                 setData(mockData);
-            } else {
-                updateBuilding(args.building);
-                const mockData = getData('buildings');
+            
+            }
+           
+            else {
+                updateWorkspace(args.workspace);
+                const mockData = getData('workspaces');
                 setData(mockData);
             }
         }
         else if(args.action == "delete"){
             
-            deleteBuilding(args.building);
-            const mockData = getData('buildings');
+            deleteWorkspace(args.workspace);
+            const mockData = getData('workspaces');
             setData(mockData);
         }
     };
 
     useEffect(() => {
-        const mockData = getData('buildings');
+        const mockData = getData('workspaces');
 
         setData(mockData);
     }, []);
@@ -55,23 +60,23 @@ const DataPageBuildings = () => {
             editable: false,
         },
         {
-            field: "name",
-            title: "NAME",
-            type: "text",
+            field:"desktops",
+            title:"Desktops",
+            type:"number",
         },
         {
-            field: "features",
-            title: "FEATURES",
-            type: "text_array",
+            field: "room",
+            title: "Room ID",
+            type: "number",
         },
     ];
 
     return (
         <div className="relative">
             <button onClick={toggleDrawer} className="p-4">
-                new building
+                new workspace
             </button>
-            <BuildingSidenav onClose={handleDrawerClose} ref={sidenavRef} />
+            <WorkspaceSidenav onClose={handleDrawerClose} ref={sidenavRef} />
 
             {/* Main content */}
             <div className={`main-content `}>
@@ -89,7 +94,7 @@ const DataPageBuildings = () => {
                     onRowClick={(row: any) => {
                         (sidenavRef.current as any)?.openDrawer({
                             isNew: false,
-                            building: row,
+                            workspace: row,
                         });
                     }}
                 />
@@ -98,4 +103,4 @@ const DataPageBuildings = () => {
     );
 };
 
-export default DataPageBuildings;
+export default DataPageWorkspaces;

@@ -4,8 +4,9 @@ import React, {
     FC,
     useImperativeHandle,
     useContext,
+    useEffect,
 } from "react";
-import { BuildingI, UserI } from "../../interfaces/db-intertface";
+import { RoomI, UserI, WorkspaceI } from "../../interfaces/db-intertface";
 import { getData } from "../../mocks/utils";
 import UserContext from "../../context/user/user-context";
 
@@ -19,30 +20,36 @@ type DrawerProps = {
     ref: any;
 };
 
-const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
+const WorkspaceSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
     ({ onClose }: DrawerProps, ref) => {
         const [isOpen, setIsOpen] = useState(false);
-        const [building, setBuilding] = useState<BuildingI>({
+        const [data, setData] = useState<any[]>([]);
+        const [workspace, setWorkspace] = useState<WorkspaceI>({
             id: 0,
-            name: "",
-            features: [],
+            room: -1,
+            desktops: 0,
+            building: -1
         });
-        const [tempFeauture, setTempFeature] = useState("");
 
         const { user: loggedInUser } = useContext(UserContext);
         useImperativeHandle(ref, () => ({
             openDrawer: openDrawer,
         }));
 
-        const handleInputChange = (
-            event: React.ChangeEvent<HTMLInputElement>
-        ) => {
-            const { name, value } = event.target;
-            setBuilding((prevBuilding) => ({
-                ...prevBuilding,
-                [name]: value,
+        const handleInputChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            const { value } = event.target;
+
+            setWorkspace((prevWorkspace) => ({
+                ...prevWorkspace,
+                room: parseInt(value),
             }));
         };
+
+        useEffect(() => {
+            const mockData = getData('rooms');
+
+            setData(mockData);
+        }, []);
 
         // const handleRoleChange = (
         //     event: React.ChangeEvent<HTMLInputElement>
@@ -74,7 +81,7 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                 )[0].roles.includes("administrator")
             ) {
                 // if (user.id !== loggedInUser.id) {
-                onClose({ action: "submit", building: building });
+                onClose({ action: "submit", workspace: workspace });
                 // } else {
                 //     alert("You cannot modify your own user");
                 // }
@@ -88,6 +95,11 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
             onClose({ action: "cancel" });
         };
 
+        const onDeletePress = () => {
+            setIsOpen(false);
+            onClose({ action: "delete", workspace: workspace });
+        }
+
         const openDrawer = (args: any) => {
             //check args.isNew to determine if we are adding a new user or editing an existing one
             //if editing, populate the user state with the user data passed in args.user
@@ -96,47 +108,18 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
             if (isOpen) return;
 
             if (args.isNew) {
-                setBuilding({
+                setWorkspace({
                     id: 0,
-                    name: "",
-                    features: [],
+                    building: -1,
+                    room: -1,
+                    desktops: 0,
                 });
             } else {
-                setBuilding(args.building);
+                setWorkspace(args.workspace);
             }
 
             setIsOpen(true);
         };
-
-        const handleAddChip = (event: any) => {
-            event.preventDefault();
-            setBuilding((prevBuilding) => ({
-                ...prevBuilding,
-                features : [...prevBuilding.features,tempFeauture],
-            }))
-            setTempFeature("");
-        };
-
-        const handleDeleteChip = (index: number) => {
-            setBuilding((prevBuilding) => {
-                let updatedFeatures = [...prevBuilding.features];
-                updatedFeatures.splice(index, 1);
-                return {
-                    ...prevBuilding,
-                    features: updatedFeatures,
-                };
-            });
-        };
-
-        const onChipInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            const { value } = event.target;
-            setTempFeature(value);
-        }
-
-        const onDeletePress = () => {
-            setIsOpen(false);
-            onClose({ action: "delete", building: building });
-        }
 
         return (
             <div
@@ -145,43 +128,44 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                     }`}
             >
                 <form onSubmit={handleSubmit} className="p-4 bg-yellow">
-                    <div className="">
-                        {" "}
-                        {/* Add the "bg-white" class */}
-                        <label htmlFor="name">Name:</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={building.name}
-                            onChange={handleInputChange}
-                            className="p-1 rounded-md mx-1 bg-neutral-700 text-white" // Add the "bg-gray-100" class
-                        />
-                    </div>
                     <div className="flex">
-                        <label htmlFor="features">Features:</label>
+                        <label htmlFor="room">Room:</label>
+                        <select
+                            id="room"
+                            name="room"
+                            value={workspace.room}
+                            onChange={handleInputChange}
+                            required
+                            className="p-1 rounded-md mx-1 bg-neutral-700 text-white"
+                        >
+                            <option value={-1}>Select a room</option>
+                            {data.map((room: RoomI) => (
+
+
+                                <option key={room.id} value={room.id} className="!text-white">
+                                    <span className="!text-white">{room.id}</span>
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+
+                    <div className="flex">
+                        <label htmlFor="desktops">Desktops:</label>
                         <input
-                            type="text"
-                            // id="features"
-                            // name="features"
-                            value={tempFeauture}
-                            onChange={onChipInputChange}
+                            type="number"
+                            id="desktops"
+                            name="desktops"
+                            value={workspace.desktops}
+                            onChange={(event) => setWorkspace((prevWorkspace) => ({
+                                ...prevWorkspace,
+                                desktops: parseInt(event.target.value),
+                            }))}
+                            required
                             className="p-1 rounded-md mx-1 bg-neutral-700 text-white"
                         />
-                        <button onClick={handleAddChip} className="p-2 bg-blue-500 text-white rounded-md">
-                            Add
-                        </button>
                     </div>
-                    <div className="flex flex-wrap mt-2">
-                        {building.features.map((feature: string, index: number) => (
-                            <div key={index} className="flex items-center bg-gray-200 rounded-md p-2 mr-2 mb-2">
-                                <span>{feature}</span>
-                                <button onClick={() => handleDeleteChip(index)} className="ml-2">
-                                    <span className="h-4 w-4 bg-red">X</span>
-                                </button>
-                            </div>
-                        ))}
-                    </div>
+
 
                     <div className="flex">
 
@@ -196,14 +180,14 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                 </div>
                 <div className="flex p-5">
 
-<button onClick={onDeletePress} className="p-4 text-red-500">
-    Delete
-</button>
-</div>
+                    <button onClick={onDeletePress} className="p-4 text-red-500">
+                        Delete
+                    </button>
+                </div>
 
             </div>
         );
     }
 );
 
-export default BuildingSidenav;
+export default WorkspaceSidenav;

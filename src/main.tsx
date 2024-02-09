@@ -10,6 +10,9 @@ import UserProvider from "./context/user/user-provider";
 import MyReservations from "./routes/my-reservations";
 import DataPageUsers from "./routes/data-page-users";
 import DataPageBuildings from "./routes/data-page-buildings";
+import DataPageRooms from "./routes/data-page-rooms";
+import DataPageWorkspaces from "./routes/data-page-workspaces";
+import DataPageReservations from "./routes/data-page-reservations";
 
 const RootElement = () => {
     return (
@@ -26,22 +29,23 @@ const RootElement = () => {
                                     path="users"
                                     element={<DataPageUsers show={"users"} />}
                                 />
-                                {/* <Route
+                                <Route
                                     path="reservations"
-                                    element={<DataPage show={"reservations"} />}
-                                /> */}
+                                    element={<DataPageReservations />}
+                                />
                                 <Route
                                     path="buildings"
                                     element={<DataPageBuildings/>}
                                 />
-                                {/* <Route
+                                 <Route
                                     path="rooms"
-                                    element={<DataPage show={"rooms"} />}
+                                    element={<DataPageRooms />}
                                 />
+                                
                                 <Route
                                     path="workspaces"
-                                    element={<DataPage show={"workspaces"} />} */}
-                                {/* /> */}
+                                    element={<DataPageWorkspaces />} 
+                                 />
                             </Route>
                             <Route
                                 path="reserve"

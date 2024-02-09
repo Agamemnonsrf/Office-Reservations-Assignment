@@ -28,6 +28,10 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
         };
     };
 
+    const onDelete = (row:any)=>{
+        props.onDelete && props.onDelete(row)
+    }
+
     return (
         <div className="p-2 w-full  h-52">
             <div
@@ -266,7 +270,7 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                                             );
                                                         }
                                                     )}
-                                                    {props.inlineEditing && (
+                                                    {(props.inlineEditing) && (
                                                         <td className="px-6 py-4 whitespace-nowrap flex gap-2 grow w-24">
                                                             <button
                                                                 onClick={() => {
@@ -280,11 +284,19 @@ const DataTable: React.FC<TableDataI> = (props: TableDataI) => {
                                                             >
                                                                 Edit
                                                             </button>
-                                                            <button className="text-red-600">
-                                                                Delete
-                                                            </button>
+                                                           
                                                         </td>
                                                     )}
+                                                    {/* <td>
+                                                    <button className="text-red-600" onClick={()=>
+                                                    {
+                                                        onDelete(row_index)
+                                                    }
+                                                        
+                                                    }>
+                                                                Delete
+                                                    </button>
+                                                    </td> */}
                                                 </tr>
                                             );
                                         }

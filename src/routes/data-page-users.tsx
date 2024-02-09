@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import DataTable from "../components/data-table/data-table";
 import UserSidenav from "../components/sidenav/user-sidenav";
 import { TableColumnI } from "../interfaces/table-interface";
-import { addUser, getData, updateUser } from "../mocks/utils";
+import { addUser, deleteUser, getData, updateUser } from "../mocks/utils";
 
 type showType = "users" | "reservations" | "buildings" | "rooms" | "workspaces";
 
@@ -35,6 +35,12 @@ const DataPageUsers = ({ show }: Props) => {
                 const mockData = getData(show);
                 setData(mockData);
             }
+        }
+        else if(args.action == "delete"){
+            
+            deleteUser(args.user);
+            const mockData = getData('users');
+            setData(mockData);
         }
     };
 

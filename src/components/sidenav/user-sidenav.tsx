@@ -89,6 +89,11 @@ const UserSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
             onClose({ action: "cancel" });
         };
 
+        const onDeletePress = () => {
+            setIsOpen(false);
+            onClose({ action: "delete", user: user });
+        }
+
         const openDrawer = (args: any) => {
             //check args.isNew to determine if we are adding a new user or editing an existing one
             //if editing, populate the user state with the user data passed in args.user
@@ -170,7 +175,12 @@ const UserSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                             Cancel
                         </button>
                     </div>
-               
+                    <div className="flex p-5">
+
+<button onClick={onDeletePress} className="p-4 text-red-500">
+    Delete
+</button>
+</div>
             </div>
         );
     }

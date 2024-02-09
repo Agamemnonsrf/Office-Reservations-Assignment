@@ -4,8 +4,9 @@ import React, {
     FC,
     useImperativeHandle,
     useContext,
+    useEffect,
 } from "react";
-import { BuildingI, UserI } from "../../interfaces/db-intertface";
+import { BuildingI, RoomI, UserI } from "../../interfaces/db-intertface";
 import { getData } from "../../mocks/utils";
 import UserContext from "../../context/user/user-context";
 
@@ -19,12 +20,13 @@ type DrawerProps = {
     ref: any;
 };
 
-const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
+const RoomSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
     ({ onClose }: DrawerProps, ref) => {
         const [isOpen, setIsOpen] = useState(false);
-        const [building, setBuilding] = useState<BuildingI>({
+        const [data, setData] = useState<any[]>([]);
+        const [room, setRoom] = useState<RoomI>({
             id: 0,
-            name: "",
+            building: -1,
             features: [],
         });
         const [tempFeauture, setTempFeature] = useState("");
@@ -34,15 +36,20 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
             openDrawer: openDrawer,
         }));
 
-        const handleInputChange = (
-            event: React.ChangeEvent<HTMLInputElement>
-        ) => {
-            const { name, value } = event.target;
-            setBuilding((prevBuilding) => ({
-                ...prevBuilding,
-                [name]: value,
+        const handleInputChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            const { value } = event.target;
+
+            setRoom((prevRoom) => ({
+                ...prevRoom,
+                building: parseInt(value),
             }));
         };
+
+        useEffect(() => {
+            const mockData = getData('rooms');
+
+            setData(mockData);
+        }, []);
 
         // const handleRoleChange = (
         //     event: React.ChangeEvent<HTMLInputElement>
@@ -74,7 +81,7 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                 )[0].roles.includes("administrator")
             ) {
                 // if (user.id !== loggedInUser.id) {
-                onClose({ action: "submit", building: building });
+                onClose({ action: "submit", room: room });
                 // } else {
                 //     alert("You cannot modify your own user");
                 // }
@@ -88,6 +95,11 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
             onClose({ action: "cancel" });
         };
 
+        const onDeletePress = () => {
+            setIsOpen(false);
+            onClose({ action: "delete", room: room });
+        }
+
         const openDrawer = (args: any) => {
             //check args.isNew to determine if we are adding a new user or editing an existing one
             //if editing, populate the user state with the user data passed in args.user
@@ -96,13 +108,13 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
             if (isOpen) return;
 
             if (args.isNew) {
-                setBuilding({
+                setRoom({
                     id: 0,
-                    name: "",
+                    building: -1,
                     features: [],
                 });
             } else {
-                setBuilding(args.building);
+                setRoom(args.room);
             }
 
             setIsOpen(true);
@@ -110,19 +122,19 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
 
         const handleAddChip = (event: any) => {
             event.preventDefault();
-            setBuilding((prevBuilding) => ({
-                ...prevBuilding,
-                features : [...prevBuilding.features,tempFeauture],
+            setRoom((prevRoom) => ({
+                ...prevRoom,
+                features: [...prevRoom.features, tempFeauture],
             }))
             setTempFeature("");
         };
 
         const handleDeleteChip = (index: number) => {
-            setBuilding((prevBuilding) => {
-                let updatedFeatures = [...prevBuilding.features];
+            setRoom((prevRoom) => {
+                let updatedFeatures = [...prevRoom.features];
                 updatedFeatures.splice(index, 1);
                 return {
-                    ...prevBuilding,
+                    ...prevRoom,
                     features: updatedFeatures,
                 };
             });
@@ -133,11 +145,6 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
             setTempFeature(value);
         }
 
-        const onDeletePress = () => {
-            setIsOpen(false);
-            onClose({ action: "delete", building: building });
-        }
-
         return (
             <div
                 ref={ref}
@@ -145,19 +152,27 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                     }`}
             >
                 <form onSubmit={handleSubmit} className="p-4 bg-yellow">
-                    <div className="">
-                        {" "}
-                        {/* Add the "bg-white" class */}
-                        <label htmlFor="name">Name:</label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={building.name}
+                    <div className="flex">
+                        <label htmlFor="building">Building:</label>
+                        <select
+                            id="building"
+                            name="building"
+                            value={room.building}
                             onChange={handleInputChange}
-                            className="p-1 rounded-md mx-1 bg-neutral-700 text-white" // Add the "bg-gray-100" class
-                        />
+                            required
+                            className="p-1 rounded-md mx-1 bg-neutral-700 text-white"
+                        >
+                            <option value={-1}>Select a building</option>
+                            {data.map((building: BuildingI) => (
+
+
+                                <option key={building.id} value={building.id} className="!text-white">
+                                    <span className="!text-white">{building.id}</span>
+                                </option>
+                            ))}
+                        </select>
                     </div>
+
                     <div className="flex">
                         <label htmlFor="features">Features:</label>
                         <input
@@ -173,7 +188,7 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
                         </button>
                     </div>
                     <div className="flex flex-wrap mt-2">
-                        {building.features.map((feature: string, index: number) => (
+                        {room.features.map((feature: string, index: number) => (
                             <div key={index} className="flex items-center bg-gray-200 rounded-md p-2 mr-2 mb-2">
                                 <span>{feature}</span>
                                 <button onClick={() => handleDeleteChip(index)} className="ml-2">
@@ -206,4 +221,4 @@ const BuildingSidenav: FC<DrawerProps> = forwardRef<any, DrawerProps>(
     }
 );
 
-export default BuildingSidenav;
+export default RoomSidenav;

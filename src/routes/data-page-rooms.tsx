@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import DataTable from "../components/data-table/data-table";
 import { TableColumnI } from "../interfaces/table-interface";
-import { addBuilding, deleteBuilding, getData, updateBuilding } from "../mocks/utils";
-import BuildingSidenav from "../components/sidenav/building-sidenav";
+import { addRoom, deleteRoom, getData, updateRoom } from "../mocks/utils";
+import RoomSidenav from "../components/sidenav/room-sidenav";
 
 
 
 
-const DataPageBuildings = () => {
+const DataPageRooms = () => {
     const [data, setData] = useState<any[]>([]);
 
     const sidenavRef = useRef<any>(null);
@@ -16,33 +16,32 @@ const DataPageBuildings = () => {
         //setIsDrawerOpen(!isDrawerOpen);
         (sidenavRef.current as any)?.openDrawer({
             isNew: true,
-            building: undefined,
+            room: undefined,
         });
     };
 
     const handleDrawerClose = (args: any) => {
         
         if (args.action === "submit") {
-            if (args.building.id == 0) {
-                addBuilding(args.building);
-                const mockData = getData('buildings');
+            if (args.room.id == 0) {
+                addRoom(args.room);
+                const mockData = getData('rooms');
                 setData(mockData);
             } else {
-                updateBuilding(args.building);
-                const mockData = getData('buildings');
+                updateRoom(args.room);
+                const mockData = getData('rooms');
                 setData(mockData);
             }
-        }
-        else if(args.action == "delete"){
+        } else if(args.action == "delete"){
             
-            deleteBuilding(args.building);
-            const mockData = getData('buildings');
+            deleteRoom(args.room);
+            const mockData = getData('rooms');
             setData(mockData);
         }
     };
 
     useEffect(() => {
-        const mockData = getData('buildings');
+        const mockData = getData('rooms');
 
         setData(mockData);
     }, []);
@@ -55,9 +54,9 @@ const DataPageBuildings = () => {
             editable: false,
         },
         {
-            field: "name",
-            title: "NAME",
-            type: "text",
+            field: "building",
+            title: "Building ID",
+            type: "number",
         },
         {
             field: "features",
@@ -69,9 +68,9 @@ const DataPageBuildings = () => {
     return (
         <div className="relative">
             <button onClick={toggleDrawer} className="p-4">
-                new building
+                new room
             </button>
-            <BuildingSidenav onClose={handleDrawerClose} ref={sidenavRef} />
+            <RoomSidenav onClose={handleDrawerClose} ref={sidenavRef} />
 
             {/* Main content */}
             <div className={`main-content `}>
@@ -89,7 +88,7 @@ const DataPageBuildings = () => {
                     onRowClick={(row: any) => {
                         (sidenavRef.current as any)?.openDrawer({
                             isNew: false,
-                            building: row,
+                            room: row,
                         });
                     }}
                 />
@@ -98,4 +97,4 @@ const DataPageBuildings = () => {
     );
 };
 
-export default DataPageBuildings;
+export default DataPageRooms;
